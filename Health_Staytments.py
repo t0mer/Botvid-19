@@ -41,7 +41,7 @@ def fullpage_screenshot():
     browser.close()
 
 
-
+print("Strating process")
 
 browser = webdriver.Chrome(executable_path="/opt/chromedriver-85.0.4183.87/chromedriver", options=option)
 browser.get("https://parents.education.gov.il/prhnet/parents/rights-obligations-regulations/health-statement-kindergarden")
@@ -58,15 +58,15 @@ browser.find_element_by_xpath(user).send_keys(userCode)
 browser.find_element_by_xpath(siteAccess).send_keys(SitePassword)
 browser.find_element_by_xpath(NextPhase).click()
 time.sleep( 2 )
+print("Logged IN...")
 element = "//input[@value='מילוי הצהרת בריאות']"
 checkForButton = browser.find_elements_by_xpath(element)
 LenCheckForButton = len(checkForButton)
-Approve = "//input[@value='אישור']"
 if KidCovid == 'yuval':
     try:
         browser.find_element_by_xpath('//*[@id="main-content"]/section[1]/div/health-declaration/div/div[1]/div/div[5]/div/div/input').click()
         time.sleep( 2 )
-        browser.find_element_by_xpath(Approve).click()
+        browser.find_element_by_xpath('//input[@value='אישור']').click()
         time.sleep( 2 )
         fullpage_screenshot()
     except:
@@ -77,7 +77,7 @@ elif KidCovid == 'omer':
     try:
         browser.find_element_by_xpath('//*[@id="main-content"]/section[1]/div/health-declaration/div/div[2]/div/div[5]/div/div/input').click()
         time.sleep( 2 )
-        browser.find_element_by_xpath(Approve).click()
+        browser.find_element_by_xpath('//input[@value='אישור']').click()
         time.sleep( 2 )
         fullpage_screenshot()
     except:
@@ -85,18 +85,21 @@ elif KidCovid == 'omer':
     else:
         fullpage_screenshot()
 elif KidCovid == 'sign':
+    print("starting Sign..")
     print(len(checkForButton))
     if int(LenCheckForButton) == 0:
         fullpage_screenshot()
-    elif int(LenCheckForButton) == NumberKids:
-        GetAllKids = browser.find_elements_by_xpath("//input[@type='button']") 
-        FoundButtons = len(GetAllKids)
-        if (FoundButtons == NumberKids or FoundButtons > 0 ):
-            for button in GetAllKids:
+    elif (LenCheckForButton == NumberKids or LenCheckForButton > 0 ):
+        for x in range(LenCheckForButton):
+            print(x + 1) 
+            checkForButton = browser.find_elements_by_xpath(element)
+            for button in checkForButton:
+                print(button)
                 browser.execute_script("arguments[0].click()", button)
                 time.sleep( 2 )
-                browser.find_element_by_xpath(Approve).click()
-            time.sleep( 2 )
-            fullpage_screenshot()
+                browser.find_elements_by_xpath('//input[@value='אישור']').click()
+                time.sleep( 2 )
+        fullpage_screenshot()
     else:
+        print("Used else...")
         fullpage_screenshot()
