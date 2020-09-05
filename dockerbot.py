@@ -72,8 +72,8 @@ def handle(msg):
         except:
             x = "Error"
             bot.sendMessage(chat_id,x)
-    elif command == '/both':
-        v_Kid = "both"
+    elif command == '/sign':
+        v_Kid = "sign"
         try:
             subprocess.check_output(['python', '/etc/Health_Staytments.py', '-u', v_UserId, '-p', v_UserKey, '-k', v_Kid, '-n', str(v_KidTotal)])
             for file in os.listdir("/opt"):

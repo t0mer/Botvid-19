@@ -16,7 +16,6 @@ parser.add_argument("-k", "--kid", dest="KidCovid")
 parser.add_argument("-n", "--numberOfKids", dest="NumberKids")
 
 
-
 args = parser.parse_args()
 userCode = args.userCode
 SitePassword = args.SitePassword
@@ -85,29 +84,19 @@ elif KidCovid == 'omer':
         fullpage_screenshot()
     else:
         fullpage_screenshot()
-elif KidCovid == 'both':
+elif KidCovid == 'sign':
     print(len(checkForButton))
     if int(LenCheckForButton) == 0:
         fullpage_screenshot()
     elif int(LenCheckForButton) == NumberKids:
         GetAllKids = browser.find_elements_by_xpath("//input[@type='button']") 
         FoundButtons = len(GetAllKids)
-        if FoundButtons == NumberKids:
+        if (FoundButtons == NumberKids or FoundButtons > 0 ):
             for button in GetAllKids:
                 browser.execute_script("arguments[0].click()", button)
                 time.sleep( 2 )
                 browser.find_element_by_xpath(Approve).click()
             time.sleep( 2 )
             fullpage_screenshot()
-    elif int(LenCheckForButton) == 1:
-        print("entered loop 1")
-        GetAllKids = browser.find_element_by_xpath("//input[@type='button']") 
-        FoundButtons = len(GetAllKids)
-        print("all buttons:" + len(GetAllKids))
-        browser.find_element_by_xpath(GetAllKids).click()
-        time.sleep( 2 )
-        browser.find_element_by_xpath(Approve).click()
-        time.sleep( 2 )
-        fullpage_screenshot()
     else:
         fullpage_screenshot()
