@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  dockerbot:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: dockerbot
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    restart: always
+    environment:
+      - API_KEY=
+      - ALLOWED_IDS=
+      - USER_ID=
+      - USER_KEY=
+      - KIDS_NUM=
+      - PYTHONIOENCODING=
+      - LANG=
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
