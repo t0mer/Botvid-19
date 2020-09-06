@@ -97,7 +97,7 @@ elif KidCovid == 'sign':
                 print(button)
                 browser.execute_script("arguments[0].click()", button)
                 time.sleep( 2 )
-                browser.find_elements_by_xpath("//input[@value='אישור']").click()
+                browser.find_element_by_xpath("//input[@value='אישור']").click()
                 time.sleep( 2 )
         fullpage_screenshot()
     else:
