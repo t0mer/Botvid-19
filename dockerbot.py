@@ -7,7 +7,6 @@ from subprocess import call
 import subprocess
 import os
 import sys
-import docker
 from telepot.loop import MessageLoop
 
 #Vars for Selenium covid kids approval
