@@ -57,9 +57,8 @@ ENV CHROMEDRIVER_EXTRA_ARGS ''
 
 EXPOSE 4444
 
-RUN pip install selenium && \
-    pip install docker speedtest-cli --no-cache-dir && \
-    pip install telepot
+RUN pip install selenium --no-cache-dir && \
+    pip install telepot --no-cache-dir
 
 RUN mkdir /opt/dockerbot
 COPY Health_Staytments.py /etc/Health_Staytments.py
