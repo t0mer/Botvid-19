@@ -19,7 +19,7 @@ parser.add_argument("-n", "--numberOfKids", dest="NumberKids")
 args = parser.parse_args()
 userCode = args.userCode
 SitePassword = args.SitePassword
-KidCovid = args.KidCovid
+KidCovid = 'sign' #args.KidCovid
 NumberKids = int (args.NumberKids)
 option = webdriver.ChromeOptions()
 option.add_argument("-incognito")
