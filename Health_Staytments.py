@@ -66,7 +66,7 @@ if KidCovid == 'yuval':
     try:
         browser.find_element_by_xpath('//*[@id="main-content"]/section[1]/div/health-declaration/div/div[1]/div/div[5]/div/div/input').click()
         time.sleep( 2 )
-        browser.find_element_by_xpath('//input[@value='אישור']').click()
+        browser.find_element_by_xpath("//input[@value='אישור']").click()
         time.sleep( 2 )
         fullpage_screenshot()
     except:
@@ -77,7 +77,7 @@ elif KidCovid == 'omer':
     try:
         browser.find_element_by_xpath('//*[@id="main-content"]/section[1]/div/health-declaration/div/div[2]/div/div[5]/div/div/input').click()
         time.sleep( 2 )
-        browser.find_element_by_xpath('//input[@value='אישור']').click()
+        browser.find_element_by_xpath("//input[@value='אישור']").click()
         time.sleep( 2 )
         fullpage_screenshot()
     except:
@@ -97,7 +97,7 @@ elif KidCovid == 'sign':
                 print(button)
                 browser.execute_script("arguments[0].click()", button)
                 time.sleep( 2 )
-                browser.find_elements_by_xpath('//input[@value='אישור']').click()
+                browser.find_elements_by_xpath("//input[@value='אישור']").click()
                 time.sleep( 2 )
         fullpage_screenshot()
     else:
