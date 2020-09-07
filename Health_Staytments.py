@@ -13,14 +13,12 @@ parser = ArgumentParser()
 parser.add_argument("-u", "--user", dest="userCode")
 parser.add_argument("-p", "--pass", dest="SitePassword")
 parser.add_argument("-k", "--kid", dest="KidCovid")
-parser.add_argument("-n", "--numberOfKids", dest="NumberKids")
 
 
 args = parser.parse_args()
 userCode = args.userCode
 SitePassword = args.SitePassword
-KidCovid = 'sign' #args.KidCovid
-NumberKids = int (args.NumberKids)
+KidCovid = args.KidCovid
 option = webdriver.ChromeOptions()
 option.add_argument("-incognito")
 option.add_argument("--headless")
@@ -33,7 +31,6 @@ option.add_argument("--window-size=800,600")
 
 def fullpage_screenshot():
     print(browser)
-    now = datetime.now()
     browser.set_window_size(800, 600) #the trick
     time.sleep(2)
     image = "/opt/Approval_form.png"
@@ -52,8 +49,6 @@ time.sleep( 2 )
 user = '//*[@id="HIN_USERID"]'
 siteAccess = '//*[@id="Ecom_Password"]'
 NextPhase = '//*[@id="loginButton2"]'
-#5425110
-#nRc3pJM7LPtT4iV7Fucv
 browser.find_element_by_xpath(user).send_keys(userCode)
 browser.find_element_by_xpath(siteAccess).send_keys(SitePassword)
 browser.find_element_by_xpath(NextPhase).click()
@@ -62,43 +57,18 @@ print("Logged IN...")
 element = "//input[@value='מילוי הצהרת בריאות']"
 checkForButton = browser.find_elements_by_xpath(element)
 LenCheckForButton = len(checkForButton)
-if KidCovid == 'yuval':
-    try:
-        browser.find_element_by_xpath('//*[@id="main-content"]/section[1]/div/health-declaration/div/div[1]/div/div[5]/div/div/input').click()
-        time.sleep( 2 )
-        browser.find_element_by_xpath("//input[@value='אישור']").click()
-        time.sleep( 2 )
-        fullpage_screenshot()
-    except:
-        fullpage_screenshot()
-    else:
-        fullpage_screenshot()
-elif KidCovid == 'omer':
-    try:
-        browser.find_element_by_xpath('//*[@id="main-content"]/section[1]/div/health-declaration/div/div[2]/div/div[5]/div/div/input').click()
-        time.sleep( 2 )
-        browser.find_element_by_xpath("//input[@value='אישור']").click()
-        time.sleep( 2 )
-        fullpage_screenshot()
-    except:
-        fullpage_screenshot()
-    else:
-        fullpage_screenshot()
-elif KidCovid == 'sign':
+if KidCovid == 'sign':
     print("starting Sign..")
     print(len(checkForButton))
     if int(LenCheckForButton) == 0:
         fullpage_screenshot()
-    elif (LenCheckForButton == NumberKids or LenCheckForButton > 0 ):
+    elif LenCheckForButton > 0:
         for x in range(LenCheckForButton):
             print(x + 1) 
-            checkForButton = browser.find_elements_by_xpath(element)
-            for button in checkForButton:
-                print(button)
-                browser.execute_script("arguments[0].click()", button)
-                time.sleep( 2 )
-                browser.find_element_by_xpath("//input[@value='אישור']").click()
-                time.sleep( 2 )
+            browser.find_element_by_xpath(element).click()
+            time.sleep( 2 )
+            browser.find_element_by_xpath("//input[@value='אישור']").click()
+            time.sleep( 2 )
         fullpage_screenshot()
     else:
         print("Used else...")
