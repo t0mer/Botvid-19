@@ -38,7 +38,7 @@ using the instruction in this article:
 In order to secure the bot and block unwanted calls from Unauthorized users add your allowd Id's with comma separated values into ALLOWED_IDS
 environmet. in order to get your id use @myidbot in telegram and send the /getid command. the result will be your ID:
 
-[![Home Assistant Integration](https://raw.githubusercontent.com/t0mer/HAvid-19/master/HAvid-19.png "Home Assistant Integration")](https://raw.githubusercontent.com/t0mer/HAvid-19/master/HAvid-19.png "Home Assistant Integration")
+[![Telegram Bot Integration](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")
 
 In order to sign the statement, open your browser and nevigate to your container ip address with port 6700:
 http://Server_Ip_Address:6070/sign.
