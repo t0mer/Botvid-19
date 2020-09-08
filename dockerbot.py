@@ -1,13 +1,6 @@
-import time
-import re
-import random
-import datetime
-import telepot
+import time, re, random, datetime, telepot
 from subprocess import call
-import subprocess
-import os
-import sys
-import docker
+import subprocess, os, sys
 from telepot.loop import MessageLoop
 
 #Vars for Selenium covid kids approval
