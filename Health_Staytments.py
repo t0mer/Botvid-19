@@ -66,7 +66,7 @@ browser.find_element_by_xpath(NextPhase).click()
 time.sleep(2)
 log_browser(browser)
 
-logger.info(f"Logged IN... url: {browser.current_url}")
+logger.info(f"Logged in")
 
 element = "//input[@value='מילוי הצהרת בריאות']"
 
@@ -75,19 +75,23 @@ checkForButton = browser.find_elements_by_xpath(element)
 LenCheckForButton = len(checkForButton)
 
 if KidCovid == 'sign':
-    logger.info("starting Sign..")
-    logger.info(LenCheckForButton)
+    logger.info(f"Starting sign... check buttons: {LenCheckForButton}")
+
     if LenCheckForButton == 0:
+        logger.error("Not able to find the check buttons. Exit")
         fullpage_screenshot()
+
     elif LenCheckForButton > 0:
         for x in range(LenCheckForButton):
             logger.info(x + 1) 
             browser.find_element_by_xpath(element).click()
             time.sleep(2)
             ToApprove = browser.find_elements_by_xpath("//input[@value='אישור']")
+            
             for a in ToApprove:
                 browser.execute_script("arguments[0].click()", a)
             time.sleep(2)
+
         fullpage_screenshot()
     else:
-        logger.info("Used else...")
+        logger.error("Used else...")
