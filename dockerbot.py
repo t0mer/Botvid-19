@@ -1,4 +1,3 @@
-import sys
 from loguru import logger
 import time, re, random, datetime, telepot
 from subprocess import call
@@ -11,19 +10,18 @@ v_UserKey = os.getenv('USER_KEY')
 
 def handle(msg):
     message_id = msg['message_id'] 
-    msg_logger = logger.bind(message_id=message_id)
 
-    msg_logger.info(f"Got msg: {msg}")
+    logger.info(f"[{message_id}] Got msg: {msg}")
 
     chat_id = msg['chat']['id']
     command = msg['text']
     
     if str(chat_id) not in os.getenv('ALLOWED_IDS'):
         bot.sendPhoto(chat_id, "https://github.com/t0mer/dockerbot/raw/master/No-Trespassing.gif")
-        msg_logger.info(f"Chat id not allowed: {chat_id}")
-        return ""
+        logger.error(f"[{message_id}] Chat id not allowed: {chat_id}")
+        return 
 
-    msg_logger.info(f"Got command: {command}")
+    logger.info(f"[{message_id}] Got command: {command}")
 
     if command == '/sign':
         v_Kid = "sign"
@@ -34,14 +32,14 @@ def handle(msg):
                     Image = os.path.join("/opt", file)
             bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
             os.remove(str(Image))
-            msg_logger.info(f"Return result to command {command}. Result image path: {Image}")
+            logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
         except Exception as ex:
-            msg_logger.exception(f"Failed to handle command. Msg: {msg}")
+            logger.exception(f"[{message_id}] Failed to handle command. Msg: {msg}")
             bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
 
     msg = f"Done message handling: {command}"
     bot.sendMessage(chat_id, msg)
-    msg_logger.info(msg)
+    logger.info(f"[{message_id}] {msg}")
 
 
 bot = telepot.Bot(os.getenv('API_KEY'))
