@@ -9,6 +9,7 @@ import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import InvalidSessionIdException
+from selenium.webdriver.support.ui import Select
 from loguru import logger
 
 
@@ -46,7 +47,7 @@ def full_page_screenshot(browser):
     time.sleep(2)
 
     browser.save_screenshot(image_file)
-    browser.close()
+    # browser.close()
 
 
 def log_browser(browser):
@@ -112,16 +113,51 @@ def sign_parents_portal(browser):
 
 def sign_pedagogy_portal(browser):
     # 1
-    browser.get("https://pedagogy.co.il/student.html#!/login")
+    browser.get("https://pedagogy.co.il/parentsmoe.html#!/confirm") #https://pedag  ogy.co.il/student.html#!/login"
+    time.sleep(2)
     log_browser(browser)
 
     # 2
     login_element = browser.find_element_by_xpath('//*[@id="main-app"]/div/div/div/div[2]/div/div[1]/div[2]/a/div')
     login_element.click()
+    time.sleep(2)
     log_browser(browser)
 
     # 3
     login(browser, user_id, user_password)
+
+    # 4
+    select = Select(browser.find_element_by_xpath('//*[@id="main-app"]/div[2]/div/div/div[2]/div/select'))
+    len_kids_options = len(select.options) - 1
+
+    if len_kids_options <= 0:
+        logger.error(f"[{message_id}] Not able to find the kids options. Exit")
+        full_page_screenshot(browser)
+        return
+
+    # 5
+    for kid_index, _ in enumerate(range(len_kids_options+1), 1):
+        # Select current kid
+        s.select_by_index(kid_index)
+
+        # The page should display no the checkboxs, page source length should change
+        log_browser(browser)
+
+        # All checkboxs
+        checkboxs = browser.find_elements_by_xpath('//*[@id="main-app"]/div[2]/div/div/div[2]/div[2]/div/div[2]//label/input[@type="checkbox"]')
+
+        if not checkboxs:
+            logger.error(f"[{message_id}] Didn't find checkboxs for kid index {kid_index}. Exit")
+            full_page_screenshot(browser)
+            return
+
+        # Click each checbox
+        for checkbox in checkboxs:
+            checkbox.click()
+
+        # Approve 
+        approve_button = browser.find_element_by_xpath('//*[@id="main-app"]/div[2]/div/div/div[2]/div[2]/div/div[2]/button')
+        approve_button.click()
 
     full_page_screenshot(browser)
 
