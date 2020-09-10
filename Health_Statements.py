@@ -48,7 +48,7 @@ def log_browser(browser):
     logger.debug(f"[{message_id}] Opened page. Url: {browser.current_url}, size: {len(browser.page_source)}")
 
 
-logger.info("Starting process")
+logger.info(f"[{message_id}] Starting process")
 
 browser = webdriver.Chrome(executable_path="/opt/chromedriver-85.0.4183.87/chromedriver", options=option)
 browser.get("https://parents.education.gov.il/prhnet/parents/rights-obligations-regulations/health-statement-kindergarden")

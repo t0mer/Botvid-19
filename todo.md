@@ -4,3 +4,4 @@
 - [ ] Add command "status" - returns current status without signing
 - [ ] Support signing in Pedagogy system
 - [ ] Add support to sign the with user and password given (not storing the value or logging it, only using in memory)
+- [ ] Update log format to have message id and set in the handle in the beginning to avoid logging it in each log
