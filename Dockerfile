@@ -59,7 +59,7 @@ RUN pip install selenium --no-cache-dir && \
     pip install loguru
 
 RUN mkdir /opt/dockerbot
-COPY Health_Staytments.py /etc/Health_Staytments.py
+COPY Health_Statements.py /etc/Health_Statements.py
 COPY dockerbot.py /opt/dockerbot
 
 RUN echo 'export PATH="/opt/chromedriver-85.0.4183.87":$PATH' >> /root/.bashrc && chmod 777 /etc/Health_Staytments.py
