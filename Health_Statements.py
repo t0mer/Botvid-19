@@ -39,7 +39,8 @@ option.add_argument('--ignore-certificate-errors')
 def full_page_screenshot(browser):
     image_file = f"/opt/Approval_form_{message_id}.png"
 
-    logger.info(f"[{message_id}] Saving screenshot from browser: {browser}, image_file: {image_file}")
+    logger.info(f"[{message_id}] Saving screenshot from browser, session_id: {browser.session_id}, "
+                f"image_file: {image_file}")
 
     browser.set_window_size(800, 600)  # the trick
     time.sleep(2)
@@ -52,7 +53,7 @@ def log_browser(browser):
     logger.debug(f"[{message_id}] Opened page. Url: {browser.current_url}, size: {len(browser.page_source)}")
 
 
-def login(browser):
+def login(browser, user_id, user_password):
     user = '//*[@id="HIN_USERID"]'
     site_access = '//*[@id="Ecom_Password"]'
     next_phase = '//*[@id="loginButton2"]'
@@ -78,19 +79,14 @@ def sign_parents_portal(browser):
     log_browser(browser)
 
     # 3
-    browser.find_element_by_xpath(start).click()
-    time.sleep(2)
-    log_browser(browser)
-
-    # 4
-    login(browser)
+    login(browser, user_id, user_password)
     logger.info(f"[{message_id}] Logged in")
 
-    # 5
+    # 4
     element = "//input[@value='מילוי הצהרת בריאות']"
     kids_checks_buttons = browser.find_elements_by_xpath(element)
 
-    # 6
+    # 5
     len_kids_checks_buttons = len(kids_checks_buttons)
     logger.info(f"[{message_id}] Starting sign... check buttons: {len_kids_checks_buttons}")
 
@@ -99,7 +95,7 @@ def sign_parents_portal(browser):
         full_page_screenshot(browser)
         return
 
-    # 7
+    # 6
     for x in range(len_kids_checks_buttons):
         logger.info(x + 1)
         browser.find_element_by_xpath(element).click()
@@ -114,6 +110,22 @@ def sign_parents_portal(browser):
     full_page_screenshot(browser)
 
 
+def sign_pedagogy_portal(browser):
+    # 1
+    browser.get("https://pedagogy.co.il/student.html#!/login")
+    log_browser(browser)
+
+    # 2
+    login_element = browser.find_element_by_xpath('//*[@id="main-app"]/div/div/div/div[2]/div/div[1]/div[2]/a/div')
+    login_element.click()
+    log_browser(browser)
+
+    # 3
+    login(browser, user_id, user_password)
+
+    full_page_screenshot(browser)
+
+
 def main():
     logger.info(f"[{message_id}] Starting process")
 
@@ -122,7 +134,9 @@ def main():
 
     browser = webdriver.Chrome(executable_path="/opt/chromedriver-85.0.4183.87/chromedriver", options=option)
 
-    sign_parents_portal(browser)
+    # sign_parents_portal(browser)
+
+    sign_pedagogy_portal(browser)
 
 
 if __name__ == '__main__':
