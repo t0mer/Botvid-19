@@ -10,7 +10,7 @@ user_password = os.getenv('USER_KEY')
 
 
 def handle(msg):
-    message_id = msg['message_id'] 
+    message_id = str(msg['message_id'])
 
     logger.info(f"[{message_id}] Got msg: {msg}")
 
