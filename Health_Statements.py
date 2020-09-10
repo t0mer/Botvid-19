@@ -38,7 +38,7 @@ def fullpage_screenshot():
     browser.close()
 
 
-print("Strating process")
+print("Starting process")
 
 browser = webdriver.Chrome(executable_path="/opt/chromedriver-85.0.4183.87/chromedriver", options=option)
 browser.get("https://parents.education.gov.il/prhnet/parents/rights-obligations-regulations/health-statement-kindergarden")
@@ -59,7 +59,7 @@ element = "//input[@value='מילוי הצהרת בריאות']"
 checkForButton = browser.find_elements_by_xpath(element)
 LenCheckForButton = len(checkForButton)
 if KidCovid == 'sign':
-    print("starting Sign..")
+    print("Starting Sign..")
     print(len(checkForButton))
     if int(LenCheckForButton) == 0:
         fullpage_screenshot()
