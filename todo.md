@@ -3,3 +3,4 @@
 - [ ] Support signing using phone and SMS (2FA) so the user don't need to save it's password in the db/config
 - [ ] Add command "status" - returns current status without signing
 - [ ] Support signing in Pedagogy system
+- [ ] Add support to sign the with user and password given (not storing the value or logging it, only using in memory)

@@ -33,12 +33,13 @@ option.add_argument('--ignore-certificate-errors')
 
 
 def fullpage_screenshot():
-    logger.info(browser)
+    logger.info(f"Saving screenshor from browser: {browser}")
     browser.set_window_size(800, 600) #the trick
     time.sleep(2)
-    image = "/opt/Approval_form.png"
+    image = f"/opt/Approval_form_{browser.session_id}.png"
     browser.save_screenshot(image)
     browser.close()
+    return image
 
 def log_browser(browser):
     logger.debug(f"Opened page. Url: {browser.current_url}, size: {len(browser.page_source)}")
