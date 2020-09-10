@@ -5,8 +5,9 @@ import subprocess, os, sys
 from telepot.loop import MessageLoop
 
 #Vars for Selenium covid kids approval
-v_UserId = os.getenv('USER_ID')
-v_UserKey = os.getenv('USER_KEY') 
+user_id = os.getenv('USER_ID')
+user_password = os.getenv('USER_KEY') 
+
 
 def handle(msg):
     message_id = msg['message_id'] 
@@ -25,20 +26,26 @@ def handle(msg):
 
     if command == '/sign':
         v_Kid = "sign"
+
         try:
-            subprocess.check_output(['python', '/etc/Health_Statements.py', '-u', v_UserId, '-p', v_UserKey, '-k', v_Kid])
-            for file in os.listdir("/opt"):
-                if file.endswith(".png"):
-                    Image = os.path.join("/opt", file)
-            bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
-            os.remove(str(Image))
-            logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
+            subprocess.check_output(['python', '/etc/Health_Statements.py', '-u', user_id, '-p', user_password, '-k', v_Kid, '-m', message_id])
+            
+            image_file = f"/opt/Approval_form_{message_id}.png"
+
+            bot.sendPhoto(chat_id=chat_id, photo=open(image_file, 'rb'))
+            
+            os.remove(image_file)
+            
+            logger.info(f"[{message_id}] Return result to command {command}. Result image path: {image_file}")
+
             bot.sendMessage(chat_id, "Signed")
         except Exception as ex:
             logger.exception(f"[{message_id}] Failed to handle command. Msg: {msg}")
+
             bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
 
     msg = f"Done message handling: {command}"
+
     logger.info(f"[{message_id}] {msg}")
 
 

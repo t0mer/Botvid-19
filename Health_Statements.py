@@ -12,15 +12,18 @@ from loguru import logger
 
 
 parser = ArgumentParser()
-parser.add_argument("-u", "--user", dest="userCode")
-parser.add_argument("-p", "--pass", dest="SitePassword")
+parser.add_argument("-u", "--user", dest="user_id")
+parser.add_argument("-p", "--pass", dest="user_password")
 parser.add_argument("-k", "--kid", dest="KidCovid")
+parser.add_argument("-m", "--messageid", dest="message_id")
 
 
 args = parser.parse_args()
-userCode = args.userCode
-SitePassword = args.SitePassword
+user_id = args.user_id
+user_password = args.user_password
 KidCovid = args.KidCovid
+message_id = args.message_id
+
 option = webdriver.ChromeOptions()
 option.add_argument("-incognito")
 option.add_argument("--headless")
@@ -33,16 +36,16 @@ option.add_argument('--ignore-certificate-errors')
 
 
 def fullpage_screenshot():
-    logger.info(f"Saving screenshor from browser: {browser}")
+    logger.info(f"[{message_id}] Saving screenshot from browser: {browser}")
     browser.set_window_size(800, 600) #the trick
     time.sleep(2)
-    image = f"/opt/Approval_form_{browser.session_id}.png"
+    image = f"/opt/Approval_form_{message_id}.png"
     browser.save_screenshot(image)
     browser.close()
     return image
 
 def log_browser(browser):
-    logger.debug(f"Opened page. Url: {browser.current_url}, size: {len(browser.page_source)}")
+    logger.debug(f"[{message_id}] Opened page. Url: {browser.current_url}, size: {len(browser.page_source)}")
 
 
 logger.info("Starting process")
@@ -58,16 +61,16 @@ time.sleep(2)
 log_browser(browser)
 
 user = '//*[@id="HIN_USERID"]'
-siteAccess = '//*[@id="Ecom_Password"]'
-NextPhase = '//*[@id="loginButton2"]'
+site_access = '//*[@id="Ecom_Password"]'
+next_phase = '//*[@id="loginButton2"]'
 
-browser.find_element_by_xpath(user).send_keys(userCode)
-browser.find_element_by_xpath(siteAccess).send_keys(SitePassword)
-browser.find_element_by_xpath(NextPhase).click()
+browser.find_element_by_xpath(user).send_keys(user_id)
+browser.find_element_by_xpath(site_access).send_keys(user_password)
+browser.find_element_by_xpath(next_phase).click()
 time.sleep(2)
 log_browser(browser)
 
-logger.info(f"Logged in")
+logger.info(f"[{message_id}] Logged in")
 
 element = "//input[@value='מילוי הצהרת בריאות']"
 
@@ -76,10 +79,10 @@ checkForButton = browser.find_elements_by_xpath(element)
 LenCheckForButton = len(checkForButton)
 
 if KidCovid == 'sign':
-    logger.info(f"Starting sign... check buttons: {LenCheckForButton}")
+    logger.info(f"[{message_id}] Starting sign... check buttons: {LenCheckForButton}")
 
     if LenCheckForButton == 0:
-        logger.error("Not able to find the check buttons. Exit")
+        logger.error(f"[{message_id}] Not able to find the check buttons. Exit")
         fullpage_screenshot()
 
     elif LenCheckForButton > 0:
@@ -95,4 +98,4 @@ if KidCovid == 'sign':
 
         fullpage_screenshot()
     else:
-        logger.error("Used else...")
+        logger.error(r"[{message_id}] Used else...")
