@@ -1,0 +1,5 @@
+- [ ] Add kids num to the config. So there is validation on that
+- [ ] Support signing only for specific kids (someone can be sick or not going)
+- [ ] Support signing using phone and SMS (2FA) so the user don't need to save it's password in the db/config
+- [ ] Add command "status" - returns current status without signing
+- [ ] Support signing in Pedagogy system
