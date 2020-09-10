@@ -33,12 +33,12 @@ def handle(msg):
             bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
             os.remove(str(Image))
             logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
+            bot.sendMessage(chat_id, "Signed")
         except Exception as ex:
             logger.exception(f"[{message_id}] Failed to handle command. Msg: {msg}")
             bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
 
     msg = f"Done message handling: {command}"
-    bot.sendMessage(chat_id, msg)
     logger.info(f"[{message_id}] {msg}")
 
 
