@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
-from datetime import date
 from datetime import time
-from datetime import datetime
 import time
 from argparse import ArgumentParser
-import os
+import sys
 
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import InvalidSessionIdException
+from selenium.common.exceptions import UnexpectedAlertPresentException, InvalidSessionIdException
 from selenium.webdriver.support.ui import Select
+
 from loguru import logger
 
 
@@ -138,25 +136,28 @@ def sign_pedagogy_portal(browser):
     # 5
     for kid_index, _ in enumerate(range(len_kids_options+1), 1):
         # Select current kid
-        s.select_by_index(kid_index)
+        select.select_by_index(kid_index)
+        time.sleep(2)
 
         # The page should display no the checkboxs, page source length should change
         log_browser(browser)
 
-        # All checkboxs
-        checkboxs = browser.find_elements_by_xpath('//*[@id="main-app"]/div[2]/div/div/div[2]/div[2]/div/div[2]//label/input[@type="checkbox"]')
+        # All checkboxes
+            checkboxes = browser.find_elements_by_xpath(
+                '//*[@id="main-app"]/div[2]/div/div/div[2]/div[2]/div/div[2]//label/input[@type="checkbox"]')
 
-        if not checkboxs:
-            logger.error(f"[{message_id}] Didn't find checkboxs for kid index {kid_index}. Exit")
+        if not checkboxes:
+            logger.error(f"[{message_id}] Didn't find checkboxes for kid index {kid_index}. Exit")
             full_page_screenshot(browser)
             return
 
-        # Click each checbox
-        for checkbox in checkboxs:
+        # Click each checkbox
+        for checkbox in checkboxes:
             checkbox.click()
 
         # Approve 
-        approve_button = browser.find_element_by_xpath('//*[@id="main-app"]/div[2]/div/div/div[2]/div[2]/div/div[2]/button')
+        approve_button = browser.find_element_by_xpath(
+            '//*[@id="main-app"]/div[2]/div/div/div[2]/div[2]/div/div[2]/button')
         approve_button.click()
 
     full_page_screenshot(browser)
@@ -168,11 +169,15 @@ def main():
     if KidCovid != 'sign':
         return
 
-    browser = webdriver.Chrome(executable_path="/opt/chromedriver-85.0.4183.87/chromedriver", options=option)
+    try:
+        browser = webdriver.Chrome(executable_path="/opt/chromedriver-85.0.4183.87/chromedriver", options=option)
 
-    # sign_parents_portal(browser)
+        # sign_parents_portal(browser)
 
-    sign_pedagogy_portal(browser)
+        sign_pedagogy_portal(browser)
+    except (UnexpectedAlertPresentException, InvalidSessionIdException) as ex:
+        logger.error(f"Selenium failure while trying to sign, original error: {ex}")
+        sys.exit(1)
 
 
 if __name__ == '__main__':
