@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM python
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
@@ -21,14 +21,11 @@ RUN groupadd --system automation && \
 # Install utilities
 # Install XVFB and TinyWM
 # Install fonts
-# Install Python
 RUN apt-get -yqq update && \
     apt-get -yqq install gnupg2 && \
     apt-get -yqq install curl unzip && \
     apt-get -yqq install xvfb tinywm && \
     apt-get -yqq install fonts-ipafont-gothic xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic && \
-    apt-get -yqq install python && \
-    apt-get -yqq install python-pip && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Chrome WebDriver
@@ -58,7 +55,8 @@ ENV CHROMEDRIVER_EXTRA_ARGS ''
 EXPOSE 4444
 
 RUN pip install selenium --no-cache-dir && \
-    pip install telepot --no-cache-dir
+    pip install telepot --no-cache-dir && \
+    pip install loguru
 
 RUN mkdir /opt/dockerbot
 COPY Health_Statements.py /etc/Health_Statements.py
@@ -66,4 +64,4 @@ COPY dockerbot.py /opt/dockerbot
 
 RUN echo 'export PATH="/opt/chromedriver-85.0.4183.87":$PATH' >> /root/.bashrc && chmod 777 /etc/Health_Statements.py
 
-ENTRYPOINT ["/usr/bin/python", "/opt/dockerbot/dockerbot.py"]
+ENTRYPOINT ["python", "/opt/dockerbot/dockerbot.py"]
