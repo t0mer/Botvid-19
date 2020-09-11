@@ -194,6 +194,8 @@ def main():
 
     sign_parents_portal(browser)
 
+    browser = webdriver.Chrome(executable_path="/opt/chromedriver-85.0.4183.87/chromedriver", options=options)
+
     sign_pedagogy_portal(browser)
 
 
