@@ -172,6 +172,12 @@ def sign_pedagogy_portal(browser):
             approve_button = browser.find_element_by_xpath(
                 '//*[@id="main-app"]/div[2]/div/div/div[2]/div[2]/div/div[2]/button')
             approve_button.click()
+            # TODO: Check if alert is ignored using disable-popup-blocking, if so can remove the try/except
+            #   if not check with wait object until the alert shows and accept it
+            #   Examples:
+            #       https://www.selenium.dev/documentation/en/
+            #       https://stackoverflow.com/questions/45319743/python-and-selenium-disable-all-alerts
+            #       http://allselenium.info/python-selenium-handle-alerts-prompts-confirmation-popups/
         except UnexpectedAlertPresentException as ex:
             logger.info(f"[{message_id}] Alert was called while approving kid {kid_index}, error: {ex}")
 
@@ -186,7 +192,7 @@ def main():
 
     browser = webdriver.Chrome(executable_path="/opt/chromedriver-85.0.4183.87/chromedriver", options=options)
 
-    # sign_parents_portal(browser)
+    sign_parents_portal(browser)
 
     sign_pedagogy_portal(browser)
 
