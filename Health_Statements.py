@@ -23,20 +23,26 @@ user_id = args.user_id
 user_password = args.user_password
 KidCovid = args.KidCovid
 message_id = args.message_id
+images_count = 0
 
-option = webdriver.ChromeOptions()
-option.add_argument("-incognito")
-option.add_argument("--headless")
-option.add_argument("disable-gpu")
-option.add_argument("--no-sandbox")
-option.add_argument('--start-maximized')
-option.add_argument("--disable-dev-shm-usage")
-option.add_argument("--window-size=800,600")
-option.add_argument('--ignore-certificate-errors')
+options = webdriver.ChromeOptions()
+options.add_argument("-incognito")
+options.add_argument("--headless")
+options.add_argument("disable-gpu")
+options.add_argument("--no-sandbox")
+options.add_argument('--start-maximized')
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--window-size=800,600")
+options.add_argument('--ignore-certificate-errors')
+options.add_argument("--disable-popup-blocking")  # Ignore alerts, if not will raise UnexpectedAlertPresentException
 
 
 def full_page_screenshot(browser):
-    image_file = f"/opt/Approval_form_{message_id}.png"
+    global images_count
+
+    image_file = f"/opt/Approval_form_{message_id}_{images_count}.png"
+
+    images_count += 1
 
     logger.info(f"[{message_id}] Saving screenshot from browser, session_id: {browser.session_id}, "
                 f"image_file: {image_file}")
@@ -134,7 +140,7 @@ def sign_pedagogy_portal(browser):
         return
 
     # 5
-    for kid_index, _ in enumerate(range(len_kids_options+1), 1):
+    for kid_index, _ in enumerate(range(len_kids_options), 1):
         # Select current kid
         select.select_by_index(kid_index)
         time.sleep(2)
@@ -143,24 +149,33 @@ def sign_pedagogy_portal(browser):
         log_browser(browser)
 
         # All checkboxes
-            checkboxes = browser.find_elements_by_xpath(
-                '//*[@id="main-app"]/div[2]/div/div/div[2]/div[2]/div/div[2]//label/input[@type="checkbox"]')
+        checkboxes = browser.find_elements_by_xpath(
+            '//*[@id="main-app"]/div[2]/div/div/div[2]/div[2]/div/div[2]//label/input[@type="checkbox"]')
 
         if not checkboxes:
-            logger.error(f"[{message_id}] Didn't find checkboxes for kid index {kid_index}. Exit")
+            # Error or the kid already signed case
+            logger.error(f"[{message_id}] Didn't find checkboxes for kid {kid_index}. Continue to next kid")
             full_page_screenshot(browser)
-            return
+            continue
 
         # Click each checkbox
         for checkbox in checkboxes:
-            checkbox.click()
+            try:
+                logger.debug(f"[{message_id}] Clicking on checkbox {checkbox} for kid {kid_index}")
+                checkbox.click()
+            except UnexpectedAlertPresentException as ex:
+                logger.info(f"[{message_id}] Alert was called while clicking on "
+                            f"checkbox {checkbox} for kid {kid_index}, error: {ex}")
 
-        # Approve 
-        approve_button = browser.find_element_by_xpath(
-            '//*[@id="main-app"]/div[2]/div/div/div[2]/div[2]/div/div[2]/button')
-        approve_button.click()
+        try:
+            # Approve
+            approve_button = browser.find_element_by_xpath(
+                '//*[@id="main-app"]/div[2]/div/div/div[2]/div[2]/div/div[2]/button')
+            approve_button.click()
+        except UnexpectedAlertPresentException as ex:
+            logger.info(f"[{message_id}] Alert was called while approving kid {kid_index}, error: {ex}")
 
-    full_page_screenshot(browser)
+        full_page_screenshot(browser)
 
 
 def main():
@@ -169,15 +184,11 @@ def main():
     if KidCovid != 'sign':
         return
 
-    try:
-        browser = webdriver.Chrome(executable_path="/opt/chromedriver-85.0.4183.87/chromedriver", options=option)
+    browser = webdriver.Chrome(executable_path="/opt/chromedriver-85.0.4183.87/chromedriver", options=options)
 
-        # sign_parents_portal(browser)
+    # sign_parents_portal(browser)
 
-        sign_pedagogy_portal(browser)
-    except (UnexpectedAlertPresentException, InvalidSessionIdException) as ex:
-        logger.error(f"Selenium failure while trying to sign, original error: {ex}")
-        sys.exit(1)
+    sign_pedagogy_portal(browser)
 
 
 if __name__ == '__main__':

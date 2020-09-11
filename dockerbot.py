@@ -2,6 +2,7 @@ from loguru import logger
 import time, re, random, datetime, telepot
 from subprocess import call
 import subprocess, os, sys
+from glob import glob
 from telepot.loop import MessageLoop
 
 #Vars for Selenium covid kids approval
@@ -28,15 +29,13 @@ def handle(msg):
         v_Kid = "sign"
 
         try:
-            subprocess.check_output(['python', '/etc/Health_Statements.py', '-u', user_id, '-p', user_password, '-k', v_Kid, '-m', message_id])
-            
-            image_file = f"/opt/Approval_form_{message_id}.png"
+            subprocess.check_output(['python', '/etc/Health_Statements.py', '-u', user_id, '-p', user_password,
+                                     '-k', v_Kid, '-m', message_id])
 
-            bot.sendPhoto(chat_id=chat_id, photo=open(image_file, 'rb'))
-            
-            os.remove(image_file)
-            
-            logger.info(f"[{message_id}] Return result to command {command}. Result image path: {image_file}")
+            for image_file in glob(f"/opt/Approval_form_{message_id}_*.png"):
+                logger.info(f"[{message_id}] Return result to command {command}. Result image path: {image_file}")
+                bot.sendPhoto(chat_id=chat_id, photo=open(image_file, 'rb'))
+                os.remove(image_file)
 
             bot.sendMessage(chat_id, "Signed")
         except Exception as ex:
