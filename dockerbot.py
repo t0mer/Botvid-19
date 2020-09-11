@@ -10,11 +10,11 @@ v_UserKey = os.getenv('USER_KEY')
 
 def handle(msg):
     message_id = msg['message_id'] 
-
-    logger.info(f"[{message_id}] Got msg: {msg}")
-
     chat_id = msg['chat']['id']
     command = msg['text']
+    logger.info(f"[{message_id}] Got msg: {command}")
+
+
     
     if str(chat_id) not in os.getenv('ALLOWED_IDS'):
         bot.sendPhoto(chat_id, "https://github.com/t0mer/dockerbot/raw/master/No-Trespassing.gif")
@@ -35,7 +35,7 @@ def handle(msg):
             logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
             bot.sendMessage(chat_id, "Signed")
         except Exception as ex:
-            logger.exception(f"[{message_id}] Failed to handle command. Msg: {msg}")
+            logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
             bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
 
     msg = f"Done message handling: {command}"
