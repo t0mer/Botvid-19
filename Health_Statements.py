@@ -5,8 +5,11 @@ from argparse import ArgumentParser
 import sys
 
 from selenium import webdriver
-from selenium.common.exceptions import UnexpectedAlertPresentException, InvalidSessionIdException
-from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.expected_conditions import alert_is_present
+from selenium.webdriver.support.ui import Select, WebDriverWait
+
+
 
 from loguru import logger
 
@@ -34,7 +37,6 @@ options.add_argument('--start-maximized')
 options.add_argument("--disable-dev-shm-usage")
 options.add_argument("--window-size=800,600")
 options.add_argument('--ignore-certificate-errors')
-options.add_argument("--disable-popup-blocking")  # Ignore alerts, if not will raise UnexpectedAlertPresentException
 
 
 def full_page_screenshot(browser):
@@ -160,26 +162,24 @@ def sign_pedagogy_portal(browser):
 
         # Click each checkbox
         for checkbox in checkboxes:
-            try:
-                logger.debug(f"[{message_id}] Clicking on checkbox {checkbox} for kid {kid_index}")
-                checkbox.click()
-            except UnexpectedAlertPresentException as ex:
-                logger.info(f"[{message_id}] Alert was called while clicking on "
-                            f"checkbox {checkbox} for kid {kid_index}, error: {ex}")
+            logger.debug(f"[{message_id}] Clicking on checkbox {checkbox} for kid {kid_index}")
+            checkbox.click()
 
         try:
             # Approve
             approve_button = browser.find_element_by_xpath(
                 '//*[@id="main-app"]/div[2]/div/div/div[2]/div[2]/div/div[2]/button')
             approve_button.click()
-            # TODO: Check if alert is ignored using disable-popup-blocking, if so can remove the try/except
-            #   if not check with wait object until the alert shows and accept it
-            #   Examples:
-            #       https://www.selenium.dev/documentation/en/
-            #       https://stackoverflow.com/questions/45319743/python-and-selenium-disable-all-alerts
-            #       http://allselenium.info/python-selenium-handle-alerts-prompts-confirmation-popups/
-        except UnexpectedAlertPresentException as ex:
-            logger.info(f"[{message_id}] Alert was called while approving kid {kid_index}, error: {ex}")
+
+            # Accept alert
+            WebDriverWait(browser, 5).until(alert_is_present(),
+                                            'Timed out waiting for alerts to appear')
+            alert = browser.switch_to.alert
+            alert_text = alert.text  # Save the text before accepting it (the object is gone)
+            alert.accept()
+            logger.info(f"[{message_id}] Alert accepted. Text: {alert_text}")
+        except TimeoutException as ex:
+            logger.info(f"[{message_id}] Alert was not called while approving kid {kid_index}, error: {ex}")
 
         full_page_screenshot(browser)
 
