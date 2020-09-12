@@ -11,20 +11,16 @@ user_password = os.getenv('USER_KEY')
 
 
 def handle(msg):
-    message_id = msg['message_id'] 
+    message_id = str(msg['message_id'])
     chat_id = msg['chat']['id']
     command = msg['text']
 
-    logger.info(f"[{message_id}] Got msg: {command}")
+    logger.info(f"[{message_id}] Got command: {command}, from chat id: {chat_id}")
 
-
-    
     if str(chat_id) not in os.getenv('ALLOWED_IDS'):
         bot.sendPhoto(chat_id, "https://github.com/t0mer/dockerbot/raw/master/No-Trespassing.gif")
         logger.error(f"[{message_id}] Chat id not allowed: {chat_id}")
-        return 
-
-    logger.info(f"[{message_id}] Got command: {command}")
+        return
 
     if command == '/sign':
         v_Kid = "sign"
