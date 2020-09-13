@@ -278,6 +278,7 @@ def handle(msg):
         file_open.close()  
 
 
+
     msg = f"Done message handling: {command}"
     logger.info(f"[{message_id}] {msg}")
 
