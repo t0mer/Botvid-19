@@ -53,6 +53,8 @@ def handle(msg):
         bot.sendMessage(chat_id,"/sign_edu - This command start the sign process at https://parents.education.gov.il ")   
         bot.sendMessage(chat_id,"/sign_mashov - This command start the sign process at https://web.mashov.info/students/login ")  
         bot.sendMessage(chat_id,"/sign_all - This command start the sign process at all configured websites ")          
+        bot.sendMessage(chat_id,"/setup - Configure parameters from Telegram")
+        bot.sendMessage(chat_id,"/showsetup - This command shows the parameters configured in the Botvid19.env file")        
 
     if command == '/sign':  # For legacy sign command -> will refer to /commands
         bot.sendMessage(chat_id,"This command was depreciated, kindly use /? to list all available commands")       

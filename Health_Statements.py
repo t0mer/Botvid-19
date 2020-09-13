@@ -9,7 +9,8 @@ from argparse import ArgumentParser
 import os
 from selenium.common.exceptions import InvalidSessionIdException
 from loguru import logger
-
+from dotenv import load_dotenv
+load_dotenv(dotenv_path='/opt/Botvid19.env',override=True)
 
 parser = ArgumentParser()
 parser.add_argument("-u", "--user", dest="userCode")
