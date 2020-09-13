@@ -3,6 +3,8 @@ import time, re, random, datetime, telepot
 from subprocess import call
 import subprocess, os, sys
 from telepot.loop import MessageLoop
+from dotenv import load_dotenv
+load_dotenv(dotenv_path='/opt/Botvid19.env',override=True)
 
 env_file = '/opt/Botvid19.env'
 
@@ -53,6 +55,9 @@ def handle(msg):
 
     if command == '/sign':  # For legacy sign command -> will refer to /commands
         bot.sendMessage(chat_id,"This command was depreciated, kindly use /? to list all available commands")       
+
+    if command == '/test':  # For legacy sign command -> will refer to /commands
+        bot.sendMessage(chat_id,"Number 5 is alive!!!")       
     
     if command == '/signall':
         v_Kid = "sign"

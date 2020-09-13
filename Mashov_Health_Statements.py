@@ -16,6 +16,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from argparse import ArgumentParser
 from selenium.common.exceptions import InvalidSessionIdException
+from dotenv import load_dotenv
+load_dotenv(dotenv_path='/opt/Botvid19.env',override=True)
 
 driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
 parser = ArgumentParser()
