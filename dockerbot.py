@@ -45,13 +45,61 @@ def handle(msg):
 
     logger.info(f"[{message_id}] Got command: {command}")
 
-    if command == '/sign':
+    if command == '/signall':
         v_Kid = "sign"
         try:
             if v_SIGN_PARENTS_EDUCATION_GOV_IL == 1:
                 bot.sendMessage(chat_id,"Starting Sign process at https://parents.education.gov.il")
                 subprocess.check_output(['python', '/etc/Health_Statements.py', '-u', v_UserId, '-p', v_UserKey, '-k', v_Kid])
 
+            if v_SIGN_WEBSITE_MASHOV == 1:
+                if v_MASHOV_NUMBER_OF_KIDS > 0:
+                    for Mashov_Kid_Number in range(1, v_MASHOV_NUMBER_OF_KIDS, 1):
+                        bot.sendMessage(chat_id,"Starting Sign process at https://web.mashov.info/students/login for Kid Number -" + str(Mashov_Kid_Number))
+                        Prep_Switch_MASHOV_USER_DICT_ID_KID = v_MASHOV_USER_DICT_ID_KID[Mashov_Kid_Number]
+                        Prep_Switch_MASHOV_USER_DICT_ID_PWD = v_MASHOV_USER_DICT_ID_PWD[Mashov_Kid_Number]
+                        Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID = v_MASHOV_USER_DICT_ID_SCHOOL_ID[Mashov_Kid_Number]
+                        subprocess.check_output(['python', '/etc/Mashov_Health_Statements.py', '-u', Prep_Switch_MASHOV_USER_DICT_ID_KID, '-p', Prep_Switch_MASHOV_USER_DICT_ID_PWD , '-s', Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID, '-kn', str(Mashov_Kid_Number)])
+
+            for file in os.listdir("/opt"):
+                if file.endswith(".png"):
+                    Image = os.path.join("/opt", file)
+                    bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
+                    os.remove(str(Image))
+                    logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
+            bot.sendMessage(chat_id, "Signed")
+        except Exception as ex:
+            logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
+            bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
+
+    msg = f"Done message handling: {command}"
+    logger.info(f"[{message_id}] {msg}")
+
+
+    if command == '/sign-edu':
+        v_Kid = "sign"
+        try:
+            if v_SIGN_PARENTS_EDUCATION_GOV_IL == 1:
+                bot.sendMessage(chat_id,"Starting Sign process at https://parents.education.gov.il")
+                subprocess.check_output(['python', '/etc/Health_Statements.py', '-u', v_UserId, '-p', v_UserKey, '-k', v_Kid])
+
+            for file in os.listdir("/opt"):
+                if file.endswith(".png"):
+                    Image = os.path.join("/opt", file)
+                    bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
+                    os.remove(str(Image))
+                    logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
+            bot.sendMessage(chat_id, "Signed")
+        except Exception as ex:
+            logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
+            bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
+
+    msg = f"Done message handling: {command}"
+    logger.info(f"[{message_id}] {msg}")
+
+
+    if command == '/sign-mashov':
+        try:
             if v_SIGN_WEBSITE_MASHOV == 1:
                 if v_MASHOV_NUMBER_OF_KIDS > 0:
                     for Mashov_Kid_Number in range(1, v_MASHOV_NUMBER_OF_KIDS, 1):

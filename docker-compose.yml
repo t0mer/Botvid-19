@@ -12,8 +12,8 @@ services:
     privileged: true
     restart: always
     environment:
-      - SIGN_WEBSITE_EDUCATION_GOV_IL= # 1 for Yes or 0 for No | to sign at website: https://parents.education.gov.il/prhnet/parents/rights-obligations-regulations/health-statement-kindergarden
-      - SIGN_WEBSITE_MASHOV= # 1 for Yes or 0 for No| to sign at website: https://web.mashov.info/students/login
+      - SIGN_WEBSITE_EDUCATION_GOV_IL=0 # 1 for Yes or 0 for No | to sign at website: https://parents.education.gov.il/prhnet/parents/rights-obligations-regulations/health-statement-kindergarden
+      - SIGN_WEBSITE_MASHOV=0 # 1 for Yes or 0 for No| to sign at website: https://web.mashov.info/students/login
       - API_KEY=
       - ALLOWED_IDS=
       - USER_ID=

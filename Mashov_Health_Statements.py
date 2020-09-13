@@ -73,10 +73,19 @@ time.sleep(10)
 
 form_element_mashov_select_option1 = driver.find_element_by_xpath("//*[@id='mat-checkbox-1']/label/div");
 form_element_mashov_select_option2 = driver.find_element_by_xpath("//*[@id='mat-checkbox-2']/label/div");
+form_element_mashov_check_if_selected_option1 = driver.find_element_by_xpath("//*[@id='mat-checkbox-1-input']").get_attribute("aria-checked");
+form_element_mashov_check_if_selected_option2 = driver.find_element_by_xpath("//*[@id='mat-checkbox-2-input']").get_attribute("aria-checked");
 form_element_mashov_submit_report = driver.find_element_by_xpath("//*[@id='mainView']/mat-sidenav-content/mshv-students-covid-clearance/mat-card/mat-card-actions/button");
 
-form_element_mashov_select_option1.click()
-form_element_mashov_select_option2.click()
+if form_element_mashov_check_if_selected_option1 != ("true"):
+    form_element_mashov_select_option1.click()
+    time.sleep(2)
+
+
+if form_element_mashov_check_if_selected_option2 != ("true"):
+    form_element_mashov_select_option2.click()
+    time.sleep(2)
+
 form_element_mashov_submit_report.click()
 time.sleep(10)
 
