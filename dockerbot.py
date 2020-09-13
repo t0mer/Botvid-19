@@ -258,6 +258,28 @@ def handle(msg):
         file_open.write(data)
         file_open.close()  
 
+    if '/setup_mashov_kid1_username=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_USER_ID_KID1='+'"'+split2_command+'"'
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_USER_ID_KID1=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_USER_ID_KID1='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close()  
+
 
     msg = f"Done message handling: {command}"
     logger.info(f"[{message_id}] {msg}")
