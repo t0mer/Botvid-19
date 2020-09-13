@@ -18,6 +18,7 @@ services:
       - USER_KEY=
       - KIDS_NUM=
       - PYTHONIOENCODING=
-      - LANG=
+      - LANG=      
     volumes:
         - /var/run/docker.sock:/var/run/docker.sock
+        - ./Botvid19.env:/opt/Botvid19.env
