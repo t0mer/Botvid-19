@@ -12,13 +12,31 @@ services:
     privileged: true
     restart: always
     environment:
+      - SIGN_WEBSITE_EDUCATION_GOV_IL=0 # 1 for Yes or 0 for No | to sign at website: https://parents.education.gov.il/prhnet/parents/rights-obligations-regulations/health-statement-kindergarden
+      - SIGN_WEBSITE_MASHOV=0 # 1 for Yes or 0 for No| to sign at website: https://web.mashov.info/students/login
       - API_KEY=
       - ALLOWED_IDS=
       - USER_ID=
       - USER_KEY=
       - KIDS_NUM=
       - PYTHONIOENCODING=
-      - LANG=      
+      - LANG=
+      - MASHOV_NUMBER_OF_KIDS=0 # Please enter number of kids on Mashov site , For example: 3
+      - MASHOV_USER_ID_KID1= # Please enter login information inside "" , For example: "123456789"
+      - MASHOV_USER_PWD_KID1= # Please enter login information inside "" , For example: "Pa$$w0rd"
+      - MASHOV_SCHOOL_ID_KID1= # Please enter School number inside "", can be extracted from URL https://web.mashov.info/students/login , For example: "123456"
+      - MASHOV_USER_ID_KID2=
+      - MASHOV_USER_PWD_KID2=
+      - MASHOV_SCHOOL_ID_KID2=
+      - MASHOV_USER_ID_KID3= 
+      - MASHOV_USER_PWD_KID3= 
+      - MASHOV_SCHOOL_ID_KID3= 
+      - MASHOV_USER_ID_KID4= 
+      - MASHOV_USER_PWD_KID4= 
+      - MASHOV_SCHOOL_ID_KID4= 
+      - MASHOV_USER_ID_KID5= 
+      - MASHOV_USER_PWD_KID5= 
+      - MASHOV_SCHOOL_ID_KID5= 
+      
     volumes:
         - /var/run/docker.sock:/var/run/docker.sock
-        - ./Botvid19.env:/opt/Botvid19.env

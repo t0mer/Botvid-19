@@ -56,7 +56,6 @@ EXPOSE 4444
 
 RUN pip install selenium --no-cache-dir && \
     pip install telepot --no-cache-dir && \
-    pip install python-dotenv --no-cache-dir && \
     pip install loguru
 
 RUN mkdir /opt/dockerbot
