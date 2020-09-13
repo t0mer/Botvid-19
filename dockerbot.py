@@ -3,6 +3,9 @@ import time, re, random, datetime, telepot
 from subprocess import call
 import subprocess, os, sys
 from telepot.loop import MessageLoop
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path='/opt/Botvid19.env',override=True)
 
 #Which Signing Website
 v_SIGN_PARENTS_EDUCATION_GOV_IL = int(os.getenv('SIGN_WEBSITE_EDUCATION_GOV_IL'))
@@ -47,14 +50,14 @@ def handle(msg):
 
     if command == '/?':
         bot.sendMessage(chat_id,"List of available commands: ")    
-        bot.sendMessage(chat_id,"/sign-edu - This command start the sign process at https://parents.education.gov.il ")   
-        bot.sendMessage(chat_id,"/sign-mashov - This command start the sign process at https://web.mashov.info/students/login ")  
-        bot.sendMessage(chat_id,"/sign-all - This command start the sign process at all configured websites ")          
+        bot.sendMessage(chat_id,"/sign_edu - This command start the sign process at https://parents.education.gov.il ")   
+        bot.sendMessage(chat_id,"/sign_mashov - This command start the sign process at https://web.mashov.info/students/login ")  
+        bot.sendMessage(chat_id,"/sign_all - This command start the sign process at all configured websites ")          
 
     if command == '/sign':  # For legacy sign command -> will refer to /commands
         bot.sendMessage(chat_id,"This command was depreciated, kindly use /? to list all available commands")       
     
-    if command == '/signall':
+    if command == '/sign_all':
         v_Kid = "sign"
         try:
             if v_SIGN_PARENTS_EDUCATION_GOV_IL == 1:
@@ -85,7 +88,7 @@ def handle(msg):
     logger.info(f"[{message_id}] {msg}")
 
 
-    if command == '/sign-edu':
+    if command == '/sign_edu':
         v_Kid = "sign"
         try:
             if v_SIGN_PARENTS_EDUCATION_GOV_IL == 1:
@@ -107,7 +110,7 @@ def handle(msg):
     logger.info(f"[{message_id}] {msg}")
 
 
-    if command == '/sign-mashov':
+    if command == '/sign_mashov':
         try:
             if v_SIGN_WEBSITE_MASHOV == 1:
                 if v_MASHOV_NUMBER_OF_KIDS > 0:
