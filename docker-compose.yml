@@ -12,8 +12,8 @@ services:
     privileged: true
     restart: always
     environment:
-      - API_KEY=1351394252:AAEJ3Ixoi04an714cbswFQgDTnWEdOG_mfc
-      - ALLOWED_IDS=293329174
+      - API_KEY=
+      - ALLOWED_IDS=
       - USER_ID=
       - USER_KEY=
       - KIDS_NUM=
