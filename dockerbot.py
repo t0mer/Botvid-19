@@ -45,14 +45,14 @@ def handle(msg):
 
     logger.info(f"[{message_id}] Got command: {command}")
 
-    if command == '/commands':
+    if command == '/?':
         bot.sendMessage(chat_id,"List of available commands: ")    
         bot.sendMessage(chat_id,"/sign-edu - This command start the sign process at https://parents.education.gov.il ")   
         bot.sendMessage(chat_id,"/sign-mashov - This command start the sign process at https://web.mashov.info/students/login ")  
         bot.sendMessage(chat_id,"/sign-all - This command start the sign process at all configured websites ")          
 
     if command == '/sign':  # For legacy sign command -> will refer to /commands
-        bot.sendMessage(chat_id,"This command was depreciated, kindly use /commands to list all available commands")       
+        bot.sendMessage(chat_id,"This command was depreciated, kindly use /? to list all available commands")       
     
     if command == '/signall':
         v_Kid = "sign"
