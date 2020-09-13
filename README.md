@@ -1,6 +1,6 @@
-# botid-19
+# Botvid-19
 
-botid-19 is a [Telepot](https://telepot.readthedocs.io/en/latest/) and selenium  powerd, easy to use Telegram bot for signing Covid-19 digital health statement.
+Botvid-19 is a [Telepot](https://telepot.readthedocs.io/en/latest/) and selenium  powered, easy to use Telegram bot for signing Covid-19 digital health statements.
 
 
 #### Credits:
@@ -25,8 +25,6 @@ services:
     environment:
       - API_KEY= #Telegram BOT API
       - ALLOWED_IDS= #Your Telegram ID (Get is using @myidbot)
-      - USER_ID= #parents.education.gov.il portal user
-      - USER_KEY= #parents.education.gov.il portal password
    ports:
       - "6700:6700"
 ```
@@ -39,6 +37,20 @@ In order to secure the bot and block unwanted calls from Unauthorized users add 
 environmet. in order to get your id use @myidbot in telegram and send the /getid command. the result will be your ID:
 
 [![Telegram Bot Integration](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")
+
+Please fill in all parameters in the file ./Botvid19.env | Please also fill 1 for the websites you want to sign the health statements on
+      - SIGN_WEBSITE_EDUCATION_GOV_IL=0 # 1 for Yes  | to sign at website: https://parents.education.gov.il/prhnet/parents/rights-obligations-regulations/health-statement-kindergarden
+      - SIGN_WEBSITE_MASHOV=0 # 1 for Yes | to sign at website: https://web.mashov.info/students/login
+      - USER_ID= #parents.education.gov.il portal user
+      - USER_KEY= #parents.education.gov.il portal password
+      - MASHOV_NUMBER_OF_KIDS=0 # Please enter number of kids on Mashov site , For example: 3
+      - MASHOV_USER_ID_KID1= # Please enter login information inside '" "' , For example: '"123456789"'
+      - MASHOV_USER_PWD_KID1= # Please enter login information inside '" "' , For example: '"Pa$$w0rd"'
+      - MASHOV_SCHOOL_ID_KID1= # Please enter School number inside '" "', can be extracted from URL https://web.mashov.info/students/login , For example: '"123456"'
+      - MASHOV_USER_ID_KID2=
+      - MASHOV_USER_PWD_KID2=
+      - MASHOV_SCHOOL_ID_KID2=
+...       
 
 In order to sign the statement, open your browser and nevigate to your container ip address with port 6700:
 http://Server_Ip_Address:6070/sign.
