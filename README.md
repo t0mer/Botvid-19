@@ -53,11 +53,11 @@ Please fill in all parameters in the file ./Botvid19.env | Please also fill 1 fo
 ...       
 
 In order to sign the statement, open your browser and nevigate to your container ip address with port 6700:
-http://Server_Ip_Address:6070/sign.
+http://Server_Ip_Address:6700/sign.
 The signing process takes about 8-10 seconds and in the ens you'll get a success message.
 
 In oreder to get the image with the signing details nevigate to your container ip address with port 6700:
-http://Server_Ip_Address:6070/statement.
+http://Server_Ip_Address:6700/statement.
 
 
 
