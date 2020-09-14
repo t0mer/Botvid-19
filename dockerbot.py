@@ -23,8 +23,9 @@ v_MASHOV_NUMBER_OF_KIDS = len(list['mashov'])
 if v_MASHOV_NUMBER_OF_KIDS >= 1 and list['mashov']['kid1']['MASHOV_USER_ID_KID'] != None:
     v_MASHOV_NUMBER_OF_KIDS = v_MASHOV_NUMBER_OF_KIDS + 1
 
-
 def handle(msg):
+    config_edu = 1
+    config_mashov = 1
     message_id = msg['message_id'] 
     chat_id = msg['chat']['id']
     command = msg['text']
@@ -52,6 +53,9 @@ def handle(msg):
             if list['edu']['USER_ID'] != None:
                 bot.sendMessage(chat_id,"Starting Sign process at https://parents.education.gov.il")
                 subprocess.check_output(['python', '/opt/dockerbot/Health_Statements.py', '-u', v_UserId, '-p', v_UserKey, '-k', v_Kid])
+            else:
+                bot.sendMessage(chat_id, "edu NOT configured")
+                config_edu = 0
 
             if v_MASHOV_NUMBER_OF_KIDS >= 1 and list['mashov']['kid1']['MASHOV_USER_ID_KID'] != None:
                 for Mashov_Kid_Number in range(1, v_MASHOV_NUMBER_OF_KIDS, 1):
@@ -60,6 +64,9 @@ def handle(msg):
                     Prep_Switch_MASHOV_USER_DICT_ID_PWD = list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_USER_PWD_KID']
                     Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID = list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_SCHOOL_ID_KID']
                     subprocess.check_output(['python', '/opt/dockerbot/Mashov_Health_Statements.py', '-u', Prep_Switch_MASHOV_USER_DICT_ID_KID, '-p', Prep_Switch_MASHOV_USER_DICT_ID_PWD , '-s', Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID, '-kn', str(Mashov_Kid_Number)])
+            else:
+                bot.sendMessage(chat_id, "mashov NOT configured")
+                config_mashov = 0
 
             for file in os.listdir("/opt"):
                 if file.endswith(".png"):
@@ -67,7 +74,8 @@ def handle(msg):
                     bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
                     os.remove(str(Image))
                     logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
-            bot.sendMessage(chat_id, "Signed")
+            if config_edu != 0 or config_mashov != 0:
+                bot.sendMessage(chat_id, "Signed")
         except Exception as ex:
             logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
             bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
@@ -82,6 +90,9 @@ def handle(msg):
             if list['edu']['USER_ID'] != None:
                 bot.sendMessage(chat_id,"Starting Sign process at https://parents.education.gov.il")
                 subprocess.check_output(['python', '/opt/dockerbot/Health_Statements.py', '-u', v_UserId, '-p', v_UserKey, '-k', v_Kid])
+            else:
+                bot.sendMessage(chat_id, "edu NOT configured")
+                config_edu = 0
 
             for file in os.listdir("/opt"):
                 if file.endswith(".png"):
@@ -89,7 +100,10 @@ def handle(msg):
                     bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
                     os.remove(str(Image))
                     logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
-            bot.sendMessage(chat_id, "Signed")
+            try: 
+                config_edu
+            except NameError:
+                bot.sendMessage(chat_id, "Signed")
         except Exception as ex:
             logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
             bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
@@ -100,13 +114,16 @@ def handle(msg):
 
     if command == '/sign_mashov':
         try:
-            if v_MASHOV_NUMBER_OF_KIDS >= '1' and list['mashov']['kid1']['MASHOV_USER_ID_KID'] != None:
+            if v_MASHOV_NUMBER_OF_KIDS >= 1 and list['mashov']['kid1']['MASHOV_USER_ID_KID'] != None:
                 for Mashov_Kid_Number in range(1, v_MASHOV_NUMBER_OF_KIDS, 1):
                     bot.sendMessage(chat_id,"Starting Sign process at https://web.mashov.info/students/login for Kid Number -" + str(Mashov_Kid_Number))
                     Prep_Switch_MASHOV_USER_DICT_ID_KID = list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_USER_ID_KID']
                     Prep_Switch_MASHOV_USER_DICT_ID_PWD = list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_USER_PWD_KID']
                     Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID = list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_SCHOOL_ID_KID']
                     subprocess.check_output(['python', '/opt/dockerbot/Mashov_Health_Statements.py', '-u', Prep_Switch_MASHOV_USER_DICT_ID_KID, '-p', Prep_Switch_MASHOV_USER_DICT_ID_PWD , '-s', Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID, '-kn', str(Mashov_Kid_Number)])
+            else:
+                bot.sendMessage(chat_id, "mashov NOT configured")
+                config_mashov = 0
 
             for file in os.listdir("/opt"):
                 if file.endswith(".png"):
@@ -114,7 +131,8 @@ def handle(msg):
                     bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
                     os.remove(str(Image))
                     logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
-            bot.sendMessage(chat_id, "Signed")
+            if config_mashov != 0:
+                bot.sendMessage(chat_id, "Signed")
         except Exception as ex:
             logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
             bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
