@@ -62,7 +62,7 @@ def handle(msg):
         try:
             if v_SIGN_PARENTS_EDUCATION_GOV_IL == 1:
                 bot.sendMessage(chat_id,"Starting Sign process at https://parents.education.gov.il")
-                subprocess.check_output(['python', '/etc/Health_Statements.py', '-u', v_UserId, '-p', v_UserKey, '-k', v_Kid])
+                subprocess.check_output(['python', '/opt/dockerbot/Health_Statements.py', '-u', v_UserId, '-p', v_UserKey, '-k', v_Kid])
 
             if v_SIGN_WEBSITE_MASHOV == 1:
                 if v_MASHOV_NUMBER_OF_KIDS > 0:
@@ -71,7 +71,7 @@ def handle(msg):
                         Prep_Switch_MASHOV_USER_DICT_ID_KID = v_MASHOV_USER_DICT_ID_KID[Mashov_Kid_Number]
                         Prep_Switch_MASHOV_USER_DICT_ID_PWD = v_MASHOV_USER_DICT_ID_PWD[Mashov_Kid_Number]
                         Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID = v_MASHOV_USER_DICT_ID_SCHOOL_ID[Mashov_Kid_Number]
-                        subprocess.check_output(['python', '/etc/Mashov_Health_Statements.py', '-u', Prep_Switch_MASHOV_USER_DICT_ID_KID, '-p', Prep_Switch_MASHOV_USER_DICT_ID_PWD , '-s', Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID, '-kn', str(Mashov_Kid_Number)])
+                        subprocess.check_output(['python', '/opt/dockerbot/Mashov_Health_Statements.py', '-u', Prep_Switch_MASHOV_USER_DICT_ID_KID, '-p', Prep_Switch_MASHOV_USER_DICT_ID_PWD , '-s', Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID, '-kn', str(Mashov_Kid_Number)])
 
             for file in os.listdir("/opt"):
                 if file.endswith(".png"):
@@ -93,7 +93,7 @@ def handle(msg):
         try:
             if v_SIGN_PARENTS_EDUCATION_GOV_IL == 1:
                 bot.sendMessage(chat_id,"Starting Sign process at https://parents.education.gov.il")
-                subprocess.check_output(['python', '/etc/Health_Statements.py', '-u', v_UserId, '-p', v_UserKey, '-k', v_Kid])
+                subprocess.check_output(['python', '/opt/dockerbot/Health_Statements.py', '-u', v_UserId, '-p', v_UserKey, '-k', v_Kid])
 
             for file in os.listdir("/opt"):
                 if file.endswith(".png"):
@@ -119,7 +119,7 @@ def handle(msg):
                         Prep_Switch_MASHOV_USER_DICT_ID_KID = v_MASHOV_USER_DICT_ID_KID[Mashov_Kid_Number]
                         Prep_Switch_MASHOV_USER_DICT_ID_PWD = v_MASHOV_USER_DICT_ID_PWD[Mashov_Kid_Number]
                         Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID = v_MASHOV_USER_DICT_ID_SCHOOL_ID[Mashov_Kid_Number]
-                        subprocess.check_output(['python', '/etc/Mashov_Health_Statements.py', '-u', Prep_Switch_MASHOV_USER_DICT_ID_KID, '-p', Prep_Switch_MASHOV_USER_DICT_ID_PWD , '-s', Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID, '-kn', str(Mashov_Kid_Number)])
+                        subprocess.check_output(['python', '/opt/dockerbot/Mashov_Health_Statements.py', '-u', Prep_Switch_MASHOV_USER_DICT_ID_KID, '-p', Prep_Switch_MASHOV_USER_DICT_ID_PWD , '-s', Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID, '-kn', str(Mashov_Kid_Number)])
 
             for file in os.listdir("/opt"):
                 if file.endswith(".png"):
