@@ -1,0 +1,13 @@
+edu:
+    USER_ID: "USER_ID12"
+    USER_KEY: "USER_KEY12"
+mashov:
+#Add Kids Block as needed
+    kid1:
+        MASHOV_USER_ID_KID: "ID1234" 
+        MASHOV_USER_PWD_KID: "pwd123"
+        MASHOV_SCHOOL_ID_KID: "2"
+    kid2:
+        MASHOV_USER_ID_KID:
+        MASHOV_USER_PWD_KID: "1234"
+        MASHOV_SCHOOL_ID_KID: "2"

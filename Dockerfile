@@ -56,14 +56,20 @@ EXPOSE 4444
 
 RUN pip install selenium --no-cache-dir && \
     pip install telepot --no-cache-dir && \
+    pip install pyyaml --no-cache-dir && \
     pip install python-dotenv --no-cache-dir && \
     pip install loguru
 
 RUN mkdir /opt/dockerbot
+RUN mkdir /opt/config
+COPY config.yml /opt/config
+COPY config.yml /etc
 COPY Health_Statements.py /opt/dockerbot
 COPY Mashov_Health_Statements.py /opt/dockerbot
 COPY dockerbot.py /opt/dockerbot
 
-RUN echo 'export PATH="/opt/chromedriver-85.0.4183.87":$PATH' >> /root/.bashrc && chmod 777 /opt/dockerbot/Health_Statements.py && chmod 777 /opt/dockerbot/Mashov_Health_Statements.py
+VOLUME [ "/opt/config" ]
+
+RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && echo 'export PATH=/opt/chromedriver-${CHROMEDRIVER_VERSION}:$PATH' >> /root/.bashrc && chmod 777 /opt/dockerbot/Health_Statements.py && chmod 777 /opt/dockerbot/Mashov_Health_Statements.py
 
 ENTRYPOINT ["python", "/opt/dockerbot/dockerbot.py"]
