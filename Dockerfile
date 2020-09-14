@@ -64,6 +64,6 @@ COPY Health_Statements.py /opt/dockerbot
 COPY Mashov_Health_Statements.py /opt/dockerbot
 COPY dockerbot.py /opt/dockerbot
 
-RUN echo 'export PATH="/opt/chromedriver-85.0.4183.87":$PATH' >> /root/.bashrc && chmod 777 /etc/Health_Statements.py && chmod 777 /etc/Mashov_Health_Statements.py
+RUN echo 'export PATH="/opt/chromedriver-85.0.4183.87":$PATH' >> /root/.bashrc && chmod 777 /opt/dockerbot/Health_Statements.py && chmod 777 /opt/dockerbot/Mashov_Health_Statements.py
 
 ENTRYPOINT ["python", "/opt/dockerbot/dockerbot.py"]
