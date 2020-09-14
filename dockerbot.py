@@ -151,12 +151,13 @@ def handle(msg):
         bot.sendMessage(chat_id,"Disable Signing at parents.education.gov.il - write /setup_disable_sign_edu")
         bot.sendMessage(chat_id,"Enable Signing at web.mashov.info - write /setup_enable_sign_mashov")     
         bot.sendMessage(chat_id,"Disable Signing at web.mashov.info - write /setup_disable_sign_mashov")
-        bot.sendMessage(chat_id,"Change Mashov number of kids to sign - write /setup_edu_site_username=username | for example /setup_edu_site_password=123456")
-        bot.sendMessage(chat_id,"Change Mashov number of kids to sign - write /setup_edu_site_password=password | for example /setup_edu_site_password=123456")
-        bot.sendMessage(chat_id,"Change Mashov number of kids to sign - write /setup_mashov_kid1_username=username | for example /setup_mashov_kid1_username=123456")
-        bot.sendMessage(chat_id,"Change Mashov number of kids to sign - write /setup_mashov_kid1_password=password | for example /setup_mashov_kid1_password=123456")
-        bot.sendMessage(chat_id,"Change Mashov number of kids to sign - write /setup_mashov_kid1_school_ID=school_ID | for example /setup_mashov_kid1_school_ID=111222")
+        bot.sendMessage(chat_id,"Change Mashov number of kids to sign - write /setup_edu_site_username=username | for example /setup_edu_site_username=123456")
+        bot.sendMessage(chat_id,"Change Mashov number of kids to sign - write /setup_edu_site_password=password | for example /setup_edu_site_password=654321")
         bot.sendMessage(chat_id,"Change Mashov number of kids to sign - write /setup_mashov_number_of_kids=number | for example /setup_mashov_number_of_kids=1")
+        bot.sendMessage(chat_id,"Change Mashov number of kids to sign - write /setup_mashov_kid1_username=username | for example /setup_mashov_kid1_username=123456")
+        bot.sendMessage(chat_id,"Change Mashov number of kids to sign - write /setup_mashov_kid1_password=password | for example /setup_mashov_kid1_password=654321")
+        bot.sendMessage(chat_id,"Change Mashov number of kids to sign - write /setup_mashov_kid1_school_ID=school_ID | for example /setup_mashov_kid1_school_ID=111222")
+        bot.sendMessage(chat_id,"Change Mashov number of kids to sign - for kids 2-5 just change the kid number in the command | for example example /setup_mashov_kid2_school_ID=111222")
 
     if command == '/setup_enable_sign_edu': 
         bot.sendMessage(chat_id,"Enabling signing at parents.education.gov.il...") 
@@ -269,7 +270,7 @@ def handle(msg):
         split_command = command.split("=")
         split2_command = split_command[1]
         bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
-        v_NEW_env_parameter = 'MASHOV_USER_ID_KID1='+'"'+split2_command+'"'
+        v_NEW_env_parameter = 'MASHOV_USER_ID_KID1='+"'"+'"'+split2_command+'"'+"'"
         file_open = open(env_file, "r")
         # locate current number of kids in env file
         for line in file_open:
@@ -291,15 +292,15 @@ def handle(msg):
         split_command = command.split("=")
         split2_command = split_command[1]
         bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
-        v_NEW_env_parameter = 'MASHOV_USER_PWD_KID1=='+'"'+split2_command+'"'
+        v_NEW_env_parameter = 'MASHOV_USER_PWD_KID1='+"'"+'"'+split2_command+'"'+"'"
         file_open = open(env_file, "r")
         # locate current number of kids in env file
         for line in file_open:
-            if 'MASHOV_USER_PWD_KID1==' in line:
+            if 'MASHOV_USER_PWD_KID1=' in line:
                 x = line.split(" #")
                 y = x[0].split("=")
                 current_num = y[1]
-        current_string = 'MASHOV_USER_PWD_KID1=='+current_num
+        current_string = 'MASHOV_USER_PWD_KID1='+current_num
         file_open.close()
         file_open = open(env_file, "rt")
         data = file_open.read()        
@@ -313,7 +314,7 @@ def handle(msg):
         split_command = command.split("=")
         split2_command = split_command[1]
         bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
-        v_NEW_env_parameter = 'MASHOV_SCHOOL_ID_KID1=='+'"'+split2_command+'"'
+        v_NEW_env_parameter = 'MASHOV_SCHOOL_ID_KID1='+"'"+'"'+split2_command+'"'+"'"
         file_open = open(env_file, "r")
         # locate current number of kids in env file
         for line in file_open:
@@ -321,7 +322,275 @@ def handle(msg):
                 x = line.split(" #")
                 y = x[0].split("=")
                 current_num = y[1]
-        current_string = 'MASHOV_SCHOOL_ID_KID1=='+current_num
+        current_string = 'MASHOV_SCHOOL_ID_KID1='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close() 
+
+
+    if '/setup_mashov_kid2_username=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_USER_ID_KID2='+"'"+'"'+split2_command+'"'+"'"
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_USER_ID_KID2=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_USER_ID_KID2='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close()  
+
+    if '/setup_mashov_kid2_password=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_USER_PWD_KID2='+"'"+'"'+split2_command+'"'+"'"
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_USER_PWD_KID2=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_USER_PWD_KID2='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close()  
+
+    if '/setup_mashov_kid2_school_ID=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_SCHOOL_ID_KID2='+"'"+'"'+split2_command+'"'+"'"
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_SCHOOL_ID_KID2=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_SCHOOL_ID_KID2='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close() 
+
+
+    if '/setup_mashov_kid3_username=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_USER_ID_KID3='+"'"+'"'+split2_command+'"'+"'"
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_USER_ID_KID3=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_USER_ID_KID3='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close()  
+
+    if '/setup_mashov_kid3_password=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_USER_PWD_KID3='+"'"+'"'+split2_command+'"'+"'"
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_USER_PWD_KID3=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_USER_PWD_KID3='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close()  
+
+    if '/setup_mashov_kid3_school_ID=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_SCHOOL_ID_KID3='+"'"+'"'+split2_command+'"'+"'"
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_SCHOOL_ID_KID3=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_SCHOOL_ID_KID3='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close() 
+
+
+    if '/setup_mashov_kid4_username=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_USER_ID_KID4='+"'"+'"'+split2_command+'"'+"'"
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_USER_ID_KID4=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_USER_ID_KID4='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close()  
+
+    if '/setup_mashov_kid4_password=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_USER_PWD_KID4='+"'"+'"'+split2_command+'"'+"'"
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_USER_PWD_KID4=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_USER_PWD_KID4='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close()  
+
+    if '/setup_mashov_kid4_school_ID=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_SCHOOL_ID_KID4='+"'"+'"'+split2_command+'"'+"'"
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_SCHOOL_ID_KID4=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_SCHOOL_ID_KID4='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close() 
+
+
+    if '/setup_mashov_kid5_username=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_USER_ID_KID5='+"'"+'"'+split2_command+'"'+"'"
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_USER_ID_KID5=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_USER_ID_KID5='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close()  
+
+    if '/setup_mashov_kid5_password=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_USER_PWD_KID5='+"'"+'"'+split2_command+'"'+"'"
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_USER_PWD_KID5=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_USER_PWD_KID5='+current_num
+        file_open.close()
+        file_open = open(env_file, "rt")
+        data = file_open.read()        
+        data = data.replace(current_string,v_NEW_env_parameter)
+        file_open.close()
+        file_open = open(env_file, "wt")
+        file_open.write(data)
+        file_open.close()  
+
+    if '/setup_mashov_kid5_school_ID=' in command:  
+        split_command = command.split("=")
+        split2_command = split_command[1]
+        bot.sendMessage(chat_id,"Updating edu username to: "+split2_command)
+        v_NEW_env_parameter = 'MASHOV_SCHOOL_ID_KID5='+"'"+'"'+split2_command+'"'+"'"
+        file_open = open(env_file, "r")
+        # locate current number of kids in env file
+        for line in file_open:
+            if 'MASHOV_SCHOOL_ID_KID5=' in line:
+                x = line.split(" #")
+                y = x[0].split("=")
+                current_num = y[1]
+        current_string = 'MASHOV_SCHOOL_ID_KID5='+current_num
         file_open.close()
         file_open = open(env_file, "rt")
         data = file_open.read()        
