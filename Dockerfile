@@ -60,8 +60,8 @@ RUN pip install selenium --no-cache-dir && \
     pip install loguru
 
 RUN mkdir /opt/dockerbot
-COPY Health_Statements.py /etc/Health_Statements.py
-COPY Mashov_Health_Statements.py /etc/Mashov_Health_Statements.py
+COPY Health_Statements.py /opt/dockerbot
+COPY Mashov_Health_Statements.py /opt/dockerbot
 COPY dockerbot.py /opt/dockerbot
 
 RUN echo 'export PATH="/opt/chromedriver-85.0.4183.87":$PATH' >> /root/.bashrc && chmod 777 /etc/Health_Statements.py && chmod 777 /etc/Mashov_Health_Statements.py
