@@ -61,8 +61,8 @@ RUN pip install selenium --no-cache-dir && \
     pip install loguru
 
 RUN mkdir /opt/dockerbot
-RUN mkdir /opt/config
-COPY config.yml /opt/config
+RUN mkdir /opt/dockerbot/config
+COPY config.yml /opt/dockerbot/config
 COPY config.yml /etc
 COPY Health_Statements.py /opt/dockerbot
 COPY Mashov_Health_Statements.py /opt/dockerbot

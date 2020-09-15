@@ -1,6 +1,6 @@
 edu:
-    USER_ID: "USER_ID12"
-    USER_KEY: "USER_KEY12"
+    USER_ID: 
+    USER_KEY: 
 mashov:
 #Add Kids Block as needed
 #UNused Kid Block should be left empty or removed from file
