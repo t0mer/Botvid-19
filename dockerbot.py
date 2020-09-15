@@ -7,7 +7,7 @@ import yaml
 import shutil
 
 #get YAML with Configs
-with open("/opt/config/config.yml", 'r') as stream:
+with open("/opt/dockerbot/config/config.yml", 'r') as stream:
     try:
         list = yaml.safe_load(stream)
     except yaml.YAMLError as exc:

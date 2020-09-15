@@ -38,19 +38,17 @@ environmet. in order to get your id use @myidbot in telegram and send the /getid
 
 [![Telegram Bot Integration](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")
 
-Please fill in all parameters in the file ./Botvid19.env | Please also fill 1 for the websites you want to sign the health statements on
-      - SIGN_WEBSITE_EDUCATION_GOV_IL=0 # 1 for Yes  | to sign at website: https://parents.education.gov.il/prhnet/parents/rights-obligations-regulations/health-statement-kindergarden
-      - SIGN_WEBSITE_MASHOV=0 # 1 for Yes | to sign at website: https://web.mashov.info/students/login
-      - USER_ID= #parents.education.gov.il portal user
-      - USER_KEY= #parents.education.gov.il portal password
-      - MASHOV_NUMBER_OF_KIDS=0 # Please enter number of kids on Mashov site , For example: 3
-      - MASHOV_USER_ID_KID1= # Please enter login information inside '" "' , For example: '"123456789"'
-      - MASHOV_USER_PWD_KID1= # Please enter login information inside '" "' , For example: '"Pa$$w0rd"'
-      - MASHOV_SCHOOL_ID_KID1= # Please enter School number inside '" "', can be extracted from URL https://web.mashov.info/students/login , For example: '"123456"'
-      - MASHOV_USER_ID_KID2=
-      - MASHOV_USER_PWD_KID2=
-      - MASHOV_SCHOOL_ID_KID2=
-...       
+Please fill in all parameters in the file ./config.yml
+  - USER_ID= #parents.education.gov.il portal user<br>
+  - USER_KEY= #parents.education.gov.il portal password<br>
+  - MASHOV_NUMBER_OF_KIDS=0 # Please enter number of kids on Mashov site , For example: 3<br>
+  - MASHOV_USER_ID_KID1= # Please enter login information inside '" "' , For example: '"123456789"'<br>
+  - MASHOV_USER_PWD_KID1= # Please enter login information inside '" "' , For example: '"Pa$$w0rd"'<br>
+  - MASHOV_SCHOOL_ID_KID1= # Please enter School number inside '" "', , For example: '"123456"'<br>
+  - MASHOV_USER_ID_KID2=<br>
+  - MASHOV_USER_PWD_KID2=<br>
+  - MASHOV_SCHOOL_ID_KID2=<br>
+
 
 In order to sign the statement, open your browser and nevigate to your container ip address with port 6700:
 http://Server_Ip_Address:6700/sign.
