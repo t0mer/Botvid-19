@@ -58,14 +58,20 @@ RUN pip install selenium --no-cache-dir && \
     pip install telepot --no-cache-dir && \
     pip install pyyaml --no-cache-dir && \
     pip install python-dotenv --no-cache-dir && \
-    pip install loguru
-
+    pip install loguru --no-cache-dir && \
+    pip install fake_useragent --no-cache-dir
+    
 RUN mkdir /opt/dockerbot
 RUN mkdir /opt/dockerbot/config
+RUN mkdir /opt/dockerbot/images
+
 COPY config.yml /opt/dockerbot/config
 COPY config.yml /etc
 COPY Health_Statements.py /opt/dockerbot
 COPY Mashov_Health_Statements.py /opt/dockerbot
+COPY Webtop_Health_Statements.py /opt/dockerbot
+COPY Infogan_Health_Statements.py /opt/dockerbot
+COPY helpers.py /opt/dockerbot
 COPY dockerbot.py /opt/dockerbot
 
 VOLUME [ "/opt/config" ]

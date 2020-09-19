@@ -12,3 +12,9 @@ mashov:
         MASHOV_USER_ID_KID:
         MASHOV_USER_PWD_KID: 
         MASHOV_SCHOOL_ID_KID:
+infogan:
+    BASE_URL: 
+    PARENT_NAME: 
+    PARENT_ID: 
+    KID_NAME: 
+    KID_ID: 
