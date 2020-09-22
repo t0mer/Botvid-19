@@ -1,6 +1,6 @@
-# botid-19
+# Botvid-19
 
-botid-19 is a [Telepot](https://telepot.readthedocs.io/en/latest/) and selenium  powerd, easy to use Telegram bot for signing Covid-19 digital health statement.
+Botvid-19 is a [Telepot](https://telepot.readthedocs.io/en/latest/) and selenium  powered, easy to use Telegram bot for signing Covid-19 digital health statements.
 
 
 #### Credits:
@@ -25,8 +25,6 @@ services:
     environment:
       - API_KEY= #Telegram BOT API
       - ALLOWED_IDS= #Your Telegram ID (Get is using @myidbot)
-      - USER_ID= #parents.education.gov.il portal user
-      - USER_KEY= #parents.education.gov.il portal password
    ports:
       - "6700:6700"
 ```
@@ -40,12 +38,24 @@ environmet. in order to get your id use @myidbot in telegram and send the /getid
 
 [![Telegram Bot Integration](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")
 
+Please fill in all parameters in the file ./config.yml
+  - USER_ID= #parents.education.gov.il portal user<br>
+  - USER_KEY= #parents.education.gov.il portal password<br>
+  - MASHOV_NUMBER_OF_KIDS=0 # Please enter number of kids on Mashov site , For example: 3<br>
+  - MASHOV_USER_ID_KID1= # Please enter login information inside '" "' , For example: '"123456789"'<br>
+  - MASHOV_USER_PWD_KID1= # Please enter login information inside '" "' , For example: '"Pa$$w0rd"'<br>
+  - MASHOV_SCHOOL_ID_KID1= # Please enter School number inside '" "', , For example: '"123456"'<br>
+  - MASHOV_USER_ID_KID2=<br>
+  - MASHOV_USER_PWD_KID2=<br>
+  - MASHOV_SCHOOL_ID_KID2=<br>
+
+
 In order to sign the statement, open your browser and nevigate to your container ip address with port 6700:
-http://Server_Ip_Address:6070/sign.
+http://Server_Ip_Address:6700/sign.
 The signing process takes about 8-10 seconds and in the ens you'll get a success message.
 
 In oreder to get the image with the signing details nevigate to your container ip address with port 6700:
-http://Server_Ip_Address:6070/statement.
+http://Server_Ip_Address:6700/statement.
 
 
 
