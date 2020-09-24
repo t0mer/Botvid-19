@@ -250,3 +250,11 @@ logger.info('I am listening...')
 
 while 1:
     time.sleep(10)
+    #check Conifg is existed
+    original = r'/etc/config.yml'
+    target = r'/opt/config/config.yml'
+    if os.path.isfile(target):
+        continue
+    else:
+        shutil.copyfile(original, target)
+        logger.info("Copyed Config to /opt/config")
