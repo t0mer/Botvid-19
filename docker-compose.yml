@@ -5,7 +5,7 @@ services:
     build: 
       context: .
       dockerfile: ./Dockerfile
-    container_name: dockerbot-test
+    container_name: dockerbot
     network_mode: host
     cap_add:
       - NET_ADMIN
