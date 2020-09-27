@@ -252,6 +252,14 @@ while 1:
     time.sleep(10)
     #check Conifg is existed
     original = r'/etc/config.yml'
+    target = r'/opt/dockerbot/config/config.yml'
+    if os.path.isfile(target):
+        continue
+    else:
+        shutil.copyfile(original, target)
+        logger.error("Recoverd Config to /opt/dockerbot/config/")
+    #check Conifg is existed
+    original = r'/etc/config.yml'
     target = r'/opt/config/config.yml'
     if os.path.isfile(target):
         continue
