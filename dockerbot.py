@@ -54,7 +54,6 @@ def handle(msg):
             chat_id, "https://github.com/t0mer/dockerbot/raw/master/No-Trespassing.gif")
         logger.error(f"[{message_id}] Chat id not allowed: {chat_id}")
         return
-
     if command == '/?' or command == '/start':
         bot.sendMessage(chat_id, "List of available commands: ")
         bot.sendMessage(
@@ -114,6 +113,7 @@ def handle(msg):
 
     if command == '/sign_webtop':
         try:
+
             Image = '/opt/dockerbot/images/webtop_approval.png'
             import Webtop_Health_Statements
             if Webtop_Health_Statements.sign(v_UserId, v_UserKey, Image) == 1:
@@ -126,8 +126,6 @@ def handle(msg):
         except Exception as ex:
             logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
             bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
-
-
     if command == '/sign_mashov':
          try:
              if v_MASHOV_NUMBER_OF_KIDS >= 1 and list['mashov']['kid1']['MASHOV_USER_ID_KID'] != None:
@@ -152,7 +150,6 @@ def handle(msg):
          except Exception as ex:
              logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
              bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
-
     msg = f"Done message handling: {command}"
     logger.info(f"[{message_id}] {msg}")
 

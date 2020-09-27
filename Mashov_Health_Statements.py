@@ -41,6 +41,7 @@ logger.info("Starting Mashov Sign process for kid number: " + var_mashov_kid_num
 
 # **************************** Mashov website ****************************
 logger.info(f"Browsing to Mashov website")
+
 driver.get("https://web.mashov.info/students/login")
 #choose school:
 form_element_mashov_select_school = driver.find_element_by_xpath("//*[@id='mat-input-3']");
@@ -63,6 +64,7 @@ form_element_mashov_password.click()
 form_element_mashov_password.send_keys(var_mashov_password)
 form_element_mashov_login.click()
 time.sleep(10)
+
 logger.info(f"Logged in")
 
 form_element_mashov_select_daily_corona_report = driver.find_element_by_xpath("//*[@id='mainView']/mat-sidenav-content/mshv-student-covidsplash/mat-card/mat-card-content/div[3]/mat-card");
@@ -85,6 +87,7 @@ if form_element_mashov_check_if_selected_option2 != ("true"):
     time.sleep(2)
 
 form_element_mashov_submit_report.click()
+
 logger.info(f"Submitted Report")
 time.sleep(10)
 
