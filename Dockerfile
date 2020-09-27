@@ -68,9 +68,9 @@ RUN mkdir /opt/dockerbot/images
 COPY config.yml /opt/dockerbot/config
 COPY config.yml /etc
 COPY Health_Statements.py /opt/dockerbot
-COPY Mashov_Health_Statements.py /opt/dockerbot
-COPY Webtop_Health_Statements.py /opt/dockerbot
-COPY Infogan_Health_Statements.py /opt/dockerbot
+COPY workers/Mashov_Health_Statements.py /opt/dockerbot
+COPY workers/Webtop_Health_Statements.py /opt/dockerbot
+COPY workers/Infogan_Health_Statements.py /opt/dockerbot
 COPY helpers.py /opt/dockerbot
 COPY dockerbot.py /opt/dockerbot
 

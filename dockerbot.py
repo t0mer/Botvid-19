@@ -263,4 +263,4 @@ while 1:
         continue
     else:
         shutil.copyfile(original, target)
-        logger.info("Copyed Config to /opt/config")
+        logger.info("Copyed Config to /opt/dockerbot/config/")
