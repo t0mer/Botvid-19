@@ -22,23 +22,10 @@ with open("/opt/dockerbot/config/config.yml", 'r') as stream:
     except yaml.YAMLError as exc:
         print(exc)
 
-# Vars For https://parents.education.gov.il/
-v_UserId = list['edu']['USER_ID']
-v_UserKey = list['edu']['USER_KEY']
-
 # Vars For https://web.mashov.info
 v_MASHOV_NUMBER_OF_KIDS = len(list['mashov'])
 if v_MASHOV_NUMBER_OF_KIDS >= 1 and list['mashov']['kid1']['MASHOV_USER_ID_KID'] != None:
     v_MASHOV_NUMBER_OF_KIDS = v_MASHOV_NUMBER_OF_KIDS + 1
-
-
-### For Infogan ###
-v_INFOGAN_BASE_URL = list['infogan']['BASE_URL']
-v_INFOGAN_KID_ID = list['infogan']['KID_ID']
-v_INFOGAN_KID_NAME = list['infogan']['KID_NAME']
-v_INFOGAN_PARENT_ID = list['infogan']['PARENT_ID']
-v_INFOGAN_PARENT_NAME = list['infogan']['PARENT_NAME']
-
 
 def handle(msg):
     config_edu = 1
@@ -54,27 +41,32 @@ def handle(msg):
             chat_id, "https://github.com/t0mer/dockerbot/raw/master/No-Trespassing.gif")
         logger.error(f"[{message_id}] Chat id not allowed: {chat_id}")
         return
+    #need to fix: so only active parts will show and not all options
     if command == '/?' or command == '/start':
         bot.sendMessage(chat_id, "List of available commands: ")
+        if list['edu']['USER_ID'] and list['edu']['USER_KEY'] != None:
+            bot.sendMessage(
+                chat_id, "/sign_edu or /sign- This command start the sign process at https://parents.education.gov.il ")
+        if v_MASHOV_NUMBER_OF_KIDS >= 1 and list['mashov']['kid1']['MASHOV_USER_ID_KID'] != None:
+            bot.sendMessage(
+                chat_id, "/sign_mashov - This command start the sign process at https://web.mashov.info/students/login ")
+        if list['infogan']['BASE_URL'] and list['infogan']['KID_ID'] and list['infogan']['PARENT_NAME'] and list['infogan']['KID_NAME'] and list['infogan']['PARENT_ID']  != None:
+            bot.sendMessage(
+                chat_id, "/sign_infogan - This command start the sign process at https://www.infogan.co.il/ ")
+        if list['edu']['USER_ID'] and list['edu']['USER_KEY'] != None:
+            bot.sendMessage(
+                chat_id, "/sign_webtop - This command start the sign process at https://www.webtop.co.il/v2/? ")
         bot.sendMessage(
-            chat_id, "/sign_edu or /sign- This command start the sign process at https://parents.education.gov.il ")
-        bot.sendMessage(
-            chat_id, "/sign_mashov - This command start the sign process at https://web.mashov.info/students/login ")
-        bot.sendMessage(
-            chat_id, "/sign_infogan - This command start the sign process at https://www.infogan.co.il/ ")
-        bot.sendMessage(
-            chat_id, "/sign_webtop - This command start the sign process at https://www.webtop.co.il/v2/? ")
-        bot.sendMessage(
-            chat_id, "/sign_all - This command starts the multiple signing process ")
+            chat_id, "/sign_all - This command starts *All* Configured signing process ")
 
     if command == '/sign_edu' or command == '/sign':
-        Image = '/opt/dockerbot/images/edu_approval.png'
-        try:
-            if list['edu']['USER_ID'] != None:
+        if list['edu']['USER_ID'] and list['edu']['USER_KEY'] != None:
+            Image = '/opt/dockerbot/images/edu_approval.png'
+            try:
                 bot.sendMessage(
                     chat_id, "Starting Sign process at https://parents.education.gov.il")
                 import Health_Statements
-                if Health_Statements.sign(str(v_UserId), v_UserKey, Image) == 1:
+                if Health_Statements.sign(str(list['edu']['USER_ID']), list['edu']['USER_KEY'], Image) == 1:
                     time.sleep(1)
                     bot.sendPhoto(chat_id=chat_id,
                                   photo=open(str(Image), 'rb'))
@@ -84,85 +76,93 @@ def handle(msg):
                 else:
                     bot.sendMessage(
                         chat_id, "Well, Somthing went wrong, please check the logs for more info")
-            else:
-                bot.sendMessage(chat_id, "edu NOT configured")
-                config_edu = 0
-        except Exception as ex:
-            logger.exception(
-                f"[{message_id}] Failed to handle command. Msg: {command}")
-            bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
+            except Exception as ex:
+                logger.exception(
+                    f"[{message_id}] Failed to handle command. Msg: {command}")
+                bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
+        else:
+            bot.sendMessage(chat_id, "edu NOT configured")
 
     if command == '/sign_infogan':
-        Image = '/opt/dockerbot/images/infogan_approval.png'
-        try:
-            bot.sendMessage(
-                chat_id, "Starting Sign process at https://https://campaign.infogan.co.il/")
-            import Infogan_Health_Statements
-            if Infogan_Health_Statements.sign(v_INFOGAN_PARENT_NAME, str(v_INFOGAN_PARENT_ID),  v_INFOGAN_KID_NAME, str(v_INFOGAN_KID_ID), v_INFOGAN_BASE_URL, Image) == 1:
-                bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
-                time.sleep(1)
-                os.remove(str(Image))
-                logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
-                bot.sendMessage(chat_id, "Signed")
-            else:
-                bot.sendMessage(chat_id, "Well, Somthing went wrong, please check the logs for more info")
-        except Exception as ex:
-            logger.exception(
-                f"[{message_id}] Failed to handle command. Msg: {command}")
-            bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
+        if list['infogan']['BASE_URL'] and list['infogan']['KID_ID'] and list['infogan']['PARENT_NAME'] and list['infogan']['KID_NAME'] and list['infogan']['PARENT_ID']  != None:
+            Image = '/opt/dockerbot/images/infogan_approval.png'
+            try:
+                bot.sendMessage(
+                    chat_id, "Starting Sign process at https://https://campaign.infogan.co.il/")
+                import Infogan_Health_Statements
+                if Infogan_Health_Statements.sign(list['infogan']['PARENT_NAME'], str(list['infogan']['PARENT_ID']),  list['infogan']['KID_NAME'], str(list['infogan']['KID_ID']), list['infogan']['BASE_URL'], Image) == 1:
+                    bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
+                    time.sleep(1)
+                    os.remove(str(Image))
+                    logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
+                    bot.sendMessage(chat_id, "Signed")
+                else:
+                    bot.sendMessage(chat_id, "Well, Somthing went wrong, please check the logs for more info")
+            except Exception as ex:
+                logger.exception(
+                    f"[{message_id}] Failed to handle command. Msg: {command}")
+                bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
+        else:
+            bot.sendMessage(chat_id, "infogan NOT configured")
 
     if command == '/sign_webtop':
-        try:
-
-            Image = '/opt/dockerbot/images/webtop_approval.png'
-            import Webtop_Health_Statements
-            if Webtop_Health_Statements.sign(v_UserId, v_UserKey, Image) == 1:
-                time.sleep(2)
-                bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
-                logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
-                bot.sendMessage(chat_id, "Signed")
-            else:
-                bot.sendMessage(chat_id, "Well, Somthing went wrong, please check the logs for more info")
-        except Exception as ex:
-            logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
-            bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
+        if list['edu']['USER_ID'] and list['edu']['USER_KEY'] != None:
+            try:
+                Image = '/opt/dockerbot/images/webtop_approval.png'
+                import Webtop_Health_Statements
+                if Webtop_Health_Statements.sign(list['edu']['USER_ID'], list['edu']['USER_KEY'], Image) == 1:
+                    time.sleep(2)
+                    bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
+                    logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
+                    bot.sendMessage(chat_id, "Signed")
+                else:
+                    bot.sendMessage(chat_id, "Well, Somthing went wrong, please check the logs for more info")
+            except Exception as ex:
+                logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
+                bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
+        else:
+            bot.sendMessage(chat_id, "webtop NOT configured")
     if command == '/sign_mashov':
-         try:
-             if v_MASHOV_NUMBER_OF_KIDS >= 1 and list['mashov']['kid1']['MASHOV_USER_ID_KID'] != None:
-                 for Mashov_Kid_Number in range(1, v_MASHOV_NUMBER_OF_KIDS, 1):
-                     bot.sendMessage(chat_id,"Starting Sign process at https://web.mashov.info/students/login for Kid Number: " + str(Mashov_Kid_Number))
-                     Prep_Switch_MASHOV_USER_DICT_ID_KID = list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_USER_ID_KID']
-                     Prep_Switch_MASHOV_USER_DICT_ID_PWD = list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_USER_PWD_KID']
-                     Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID = list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_SCHOOL_ID_KID']                     
-                     subprocess.check_output(['python', '/opt/dockerbot/Mashov_Health_Statements.py', '-u', Prep_Switch_MASHOV_USER_DICT_ID_KID, '-p', Prep_Switch_MASHOV_USER_DICT_ID_PWD , '-s', Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID, '-kn', str(Mashov_Kid_Number)])
-             else:
-                 bot.sendMessage(chat_id, "mashov NOT configured")
-                 config_mashov = 0
+        if v_MASHOV_NUMBER_OF_KIDS >= 1 and list['mashov']['kid1']['MASHOV_USER_ID_KID'] != None:
+            try:
+                if v_MASHOV_NUMBER_OF_KIDS >= 1 and list['mashov']['kid1']['MASHOV_USER_ID_KID'] != None:
+                    for Mashov_Kid_Number in range(1, v_MASHOV_NUMBER_OF_KIDS, 1):
+                        if list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_USER_ID_KID'] and list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_USER_PWD_KID'] and list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_SCHOOL_ID_KID'] != None:
+                            bot.sendMessage(chat_id,"Starting Sign process at https://web.mashov.info/students/login for Kid Number: " + str(Mashov_Kid_Number))
+                            Prep_Switch_MASHOV_USER_DICT_ID_KID = list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_USER_ID_KID']
+                            Prep_Switch_MASHOV_USER_DICT_ID_PWD = list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_USER_PWD_KID']
+                            Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID = list['mashov']['kid'+str(Mashov_Kid_Number)]['MASHOV_SCHOOL_ID_KID']                     
+                            subprocess.check_output(['python', '/opt/dockerbot/Mashov_Health_Statements.py', '-u', Prep_Switch_MASHOV_USER_DICT_ID_KID, '-p', Prep_Switch_MASHOV_USER_DICT_ID_PWD , '-s', Prep_Switch_MASHOV_USER_DICT_ID_SCHOOL_ID, '-kn', str(Mashov_Kid_Number)])
+                else:
+                    bot.sendMessage(chat_id, "mashov NOT configured")
+                    config_mashov = 0
 
-             for file in os.listdir("/opt"):
-                 if file.endswith(".png") and file.startswith("mashovkid"):
-                     Image = os.path.join("/opt", file)
-                     bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
-                     os.remove(str(Image))
-                     logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
-             if config_mashov != 0:
-                 bot.sendMessage(chat_id, "Signed")
-         except Exception as ex:
-             logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
-             bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
+                for file in os.listdir("/opt"):
+                    if file.endswith(".png") and file.startswith("mashovkid"):
+                        Image = os.path.join("/opt", file)
+                        bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
+                        os.remove(str(Image))
+                        logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
+                if config_mashov != 0:
+                    bot.sendMessage(chat_id, "Signed")
+            except Exception as ex:
+                logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
+                bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
+        else:
+            bot.sendMessage(chat_id, "mashov NOT configured")
     msg = f"Done message handling: {command}"
     logger.info(f"[{message_id}] {msg}")
 
 
     if command == '/sign_all':
-        if list['auto_sign']['edu'] == 1:
+        if list['edu']['USER_ID'] and list['edu']['USER_KEY'] != None:
             Image = '/opt/dockerbot/images/edu_approval.png'
             try:
                 if list['edu']['USER_ID'] != None:
                     bot.sendMessage(
                         chat_id, "Starting Sign process at https://parents.education.gov.il")
                     import Health_Statements
-                    if Health_Statements.sign(str(v_UserId), v_UserKey, Image) == 1:
+                    if Health_Statements.sign(str(list['edu']['USER_ID']), list['edu']['USER_KEY'], Image) == 1:
                         time.sleep(1)
                         bot.sendPhoto(chat_id=chat_id,
                                       photo=open(str(Image), 'rb'))
@@ -179,7 +179,7 @@ def handle(msg):
                 logger.exception(
                     f"[{message_id}] Failed to handle command. Msg: {command}")
                 bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
-        if list['auto_sign']['mashov'] == 1:
+        if v_MASHOV_NUMBER_OF_KIDS >= 1 and list['mashov']['kid1']['MASHOV_USER_ID_KID'] != None:
              try:
                  if v_MASHOV_NUMBER_OF_KIDS >= 1 and list['mashov']['kid1']['MASHOV_USER_ID_KID'] != None:
                      for Mashov_Kid_Number in range(1, v_MASHOV_NUMBER_OF_KIDS, 1):
@@ -203,13 +203,13 @@ def handle(msg):
              except Exception as ex:
                  logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
                  bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
-        if list['auto_sign']['infogan'] == 1:
+        if list['infogan']['BASE_URL'] and list['infogan']['KID_ID'] and list['infogan']['PARENT_NAME'] and list['infogan']['KID_NAME'] and list['infogan']['PARENT_ID']  != None:
             Image = '/opt/dockerbot/images/infogan_approval.png'
             try:
                 bot.sendMessage(
                     chat_id, "Starting Sign process at https://https://campaign.infogan.co.il/")
                 import Infogan_Health_Statements
-                if Infogan_Health_Statements.sign(v_INFOGAN_PARENT_NAME, str(v_INFOGAN_PARENT_ID),  v_INFOGAN_KID_NAME, str(v_INFOGAN_KID_ID), v_INFOGAN_BASE_URL, Image) == 1:
+                if Infogan_Health_Statements.sign(list['infogan']['PARENT_NAME'], str(list['infogan']['PARENT_ID']),  list['infogan']['KID_NAME'], str(list['infogan']['KID_ID']), list['infogan']['BASE_URL'], Image) == 1:
                     bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
                     time.sleep(1)
                     os.remove(str(Image))
@@ -221,11 +221,11 @@ def handle(msg):
                 logger.exception(
                     f"[{message_id}] Failed to handle command. Msg: {command}")
                 bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
-        if list['auto_sign']['webtop'] == 1:
+        if list['edu']['USER_ID'] and list['edu']['USER_KEY'] != None:
             try:
                 Image = '/opt/dockerbot/images/webtop_approval.png'
                 import Webtop_Health_Statements
-                if Webtop_Health_Statements.sign(v_UserId, v_UserKey, Image) == 1:
+                if Webtop_Health_Statements.sign(list['edu']['USER_ID'], list['edu']['USER_KEY'], Image) == 1:
                     time.sleep(2)
                     bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
                     logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
@@ -235,8 +235,6 @@ def handle(msg):
             except Exception as ex:
                 logger.exception(f"[{message_id}] Failed to handle command. Msg: {command}")
                 bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
-
-
 
 
 bot = telepot.Bot(os.getenv('API_KEY'))
@@ -256,11 +254,3 @@ while 1:
     else:
         shutil.copyfile(original, target)
         logger.error("Recoverd Config to /opt/dockerbot/config/")
-    #check Conifg is existed
-    original = r'/etc/config.yml'
-    target = r'/opt/config/config.yml'
-    if os.path.isfile(target):
-        continue
-    else:
-        shutil.copyfile(original, target)
-        logger.info("Copyed Config to /opt/dockerbot/config/")

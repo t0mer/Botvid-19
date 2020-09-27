@@ -67,7 +67,7 @@ RUN mkdir /opt/dockerbot/images
 
 COPY config.yml /opt/dockerbot/config
 COPY config.yml /etc
-COPY Health_Statements.py /opt/dockerbot
+COPY workers/Health_Statements.py /opt/dockerbot
 COPY workers/Mashov_Health_Statements.py /opt/dockerbot
 COPY workers/Webtop_Health_Statements.py /opt/dockerbot
 COPY workers/Infogan_Health_Statements.py /opt/dockerbot
@@ -76,6 +76,10 @@ COPY dockerbot.py /opt/dockerbot
 
 VOLUME [ "/opt/config" ]
 
-RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && echo 'export PATH=/opt/chromedriver-${CHROMEDRIVER_VERSION}:$PATH' >> /root/.bashrc && chmod 777 /opt/dockerbot/Health_Statements.py && chmod 777 /opt/dockerbot/Mashov_Health_Statements.py
+RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
+    echo "export CHROME_VERSION=${CHROMEDRIVER_VERSION}" >> /root/.bashrc && \
+    echo 'export PATH=/opt/chromedriver-${CHROME_VERSION}:$PATH' >> /root/.bashrc && \
+    chmod 777 /opt/dockerbot/Health_Statements.py && \
+    chmod 777 /opt/dockerbot/Mashov_Health_Statements.py
 
 ENTRYPOINT ["python", "/opt/dockerbot/dockerbot.py"]

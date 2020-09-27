@@ -53,7 +53,7 @@ def sign(userCode, sitePassword, Image):
             logger.info(f"Starting sign... check buttons: {LenCheckForButton}")
             if LenCheckForButton == 0:
                 logger.error("Not able to find the check buttons. Exit")
-                helpers.fullpage_screenshot()
+                helpers.fullpage_screenshot(browser, Image)
 
             elif LenCheckForButton > 0:
                 for x in range(LenCheckForButton):

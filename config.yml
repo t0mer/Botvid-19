@@ -18,10 +18,3 @@ infogan:
     PARENT_ID: 
     KID_NAME: 
     KID_ID: 
-#If you want to autosign different kinds of sign methods at once, for example signing EDU+Mashov together, please write 1 (the same as in the example)
-auto_sign:
-    example: 1
-    edu: 
-    mashov: 
-    infogan: 
-    webtop: 
