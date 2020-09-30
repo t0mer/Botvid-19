@@ -1,6 +1,9 @@
 edu:
     USER_ID: 
     USER_KEY: 
+webtop:
+    USER_ID: 
+    USER_KEY: 
 mashov:
 #Add Kids Block as needed (please enclose with "" , for example "123456")
 #UNused Kid Block should be commented with # or removed from file

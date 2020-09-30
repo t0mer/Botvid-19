@@ -53,7 +53,7 @@ def handle(msg):
         if list['infogan']['BASE_URL'] and list['infogan']['KID_ID'] and list['infogan']['PARENT_NAME'] and list['infogan']['KID_NAME'] and list['infogan']['PARENT_ID']  != None:
             bot.sendMessage(
                 chat_id, "/sign_infogan - This command start the sign process at https://www.infogan.co.il/ ")
-        if list['edu']['USER_ID'] and list['edu']['USER_KEY'] != None:
+        if list['webtop']['USER_ID'] and list['webtop']['USER_KEY'] != None:
             bot.sendMessage(
                 chat_id, "/sign_webtop - This command start the sign process at https://www.webtop.co.il/v2/? ")
         bot.sendMessage(
@@ -106,11 +106,11 @@ def handle(msg):
             bot.sendMessage(chat_id, "infogan NOT configured")
 
     if command == '/sign_webtop':
-        if list['edu']['USER_ID'] and list['edu']['USER_KEY'] != None:
+        if list['webtop']['USER_ID'] and list['webtop']['USER_KEY'] != None:
             try:
                 Image = '/opt/dockerbot/images/webtop_approval.png'
                 import Webtop_Health_Statements
-                if Webtop_Health_Statements.sign(list['edu']['USER_ID'], list['edu']['USER_KEY'], Image) == 1:
+                if Webtop_Health_Statements.sign(list['webtop']['USER_ID'], list['webtop']['USER_KEY'], Image) == 1:
                     time.sleep(2)
                     bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
                     logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
