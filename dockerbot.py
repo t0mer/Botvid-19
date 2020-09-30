@@ -221,11 +221,11 @@ def handle(msg):
                 logger.exception(
                     f"[{message_id}] Failed to handle command. Msg: {command}")
                 bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
-        if list['edu']['USER_ID'] and list['edu']['USER_KEY'] != None:
+        if list['webtop']['USER_ID'] and list['webtop']['USER_KEY'] != None:
             try:
                 Image = '/opt/dockerbot/images/webtop_approval.png'
                 import Webtop_Health_Statements
-                if Webtop_Health_Statements.sign(list['edu']['USER_ID'], list['edu']['USER_KEY'], Image) == 1:
+                if Webtop_Health_Statements.sign(list['webtop']['USER_ID'], list['webtop']['USER_KEY'], Image) == 1:
                     time.sleep(2)
                     bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
                     logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
