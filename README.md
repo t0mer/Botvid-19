@@ -8,25 +8,35 @@ Botvid-19 is a [Telepot](https://telepot.readthedocs.io/en/latest/) and selenium
 
 - [Adam Russak](https://github.com/AdamRussak) for working with me on this project and writing the selenium part
 
-
 ## Usage
+
+### supported platforms:
+* [edu](https://parents.education.gov.il)
+* [mashov](https://web.mashov.info/students/login)
+* [infogan](https://https://campaign.infogan.co.il/)
+* [webtop](https://www.webtop.co.il/mobilev2/?)
 
 #### docker-compose from hub
 ```yaml
 version: "3.7"
 
 services:
-  havid-19:
-    image: techblog/botid-19
-    container_name: botid-19
+  dockerbot:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: dockerbot
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    privileged: true
     restart: always
-    labels:
-      - "com.ouroboros.enable=true"
     environment:
-      - API_KEY= #Telegram BOT API
-      - ALLOWED_IDS= #Your Telegram ID (Get is using @myidbot)
-   ports:
-      - "6700:6700"
+      - API_KEY=
+      - ALLOWED_IDS=
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /path/to/config/in/host:/opt/config
 ```
 
 Replace API_KEY with your bot token. if you do not have existing bot you can create one
@@ -36,18 +46,34 @@ using the instruction in this article:
 In order to secure the bot and block unwanted calls from Unauthorized users add your allowd Id's with comma separated values into ALLOWED_IDS
 environmet. in order to get your id use @myidbot in telegram and send the /getid command. the result will be your ID:
 
-[![Telegram Bot Integration](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")
+[![Telegram Bot Integration](https://raw.githubusercontent.com/t0mer/Botvid-19/master/example/images/Botvid-19.png "Telegram Bot Integration")](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")
 
 Please fill in all parameters in the file ./config.yml
-  - USER_ID= #parents.education.gov.il portal user<br>
-  - USER_KEY= #parents.education.gov.il portal password<br>
-  - MASHOV_NUMBER_OF_KIDS=0 # Please enter number of kids on Mashov site , For example: 3<br>
-  - MASHOV_USER_ID_KID1= # Please enter login information inside '" "' , For example: '"123456789"'<br>
-  - MASHOV_USER_PWD_KID1= # Please enter login information inside '" "' , For example: '"Pa$$w0rd"'<br>
-  - MASHOV_SCHOOL_ID_KID1= # Please enter School number inside '" "', , For example: '"123456"'<br>
-  - MASHOV_USER_ID_KID2=<br>
-  - MASHOV_USER_PWD_KID2=<br>
-  - MASHOV_SCHOOL_ID_KID2=<br>
+```
+edu:
+    USER_ID: 
+    USER_KEY: 
+webtop:
+    USER_ID: 
+    USER_KEY: 
+mashov:
+#Add Kids Block as needed (please enclose with "" , for example "123456")
+#UNused Kid Block should be commented with # or removed from file
+    kid1:
+        MASHOV_USER_ID_KID: 
+        MASHOV_USER_PWD_KID: 
+        MASHOV_SCHOOL_ID_KID: 
+    #kid2:
+    #    MASHOV_USER_ID_KID: 
+    #    MASHOV_USER_PWD_KID: 
+    #    MASHOV_SCHOOL_ID_KID: 
+infogan:
+    BASE_URL: 
+    PARENT_NAME: 
+    PARENT_ID: 
+    KID_NAME: 
+    KID_ID: 
+  ```
 
 
 In order to sign the statement, open your browser and nevigate to your container ip address with port 6700:
