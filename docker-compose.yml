@@ -14,11 +14,6 @@ services:
     environment:
       - API_KEY=
       - ALLOWED_IDS=
-      - USER_ID=
-      - USER_KEY=
-      - KIDS_NUM=
-      - PYTHONIOENCODING=
-      - LANG=      
     volumes:
         - /var/run/docker.sock:/var/run/docker.sock
-        - ./Botvid19.env:/opt/Botvid19.env
+        - /path/to/config/in/host:/opt/config

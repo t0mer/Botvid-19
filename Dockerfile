@@ -56,14 +56,30 @@ EXPOSE 4444
 
 RUN pip install selenium --no-cache-dir && \
     pip install telepot --no-cache-dir && \
+    pip install pyyaml --no-cache-dir && \
     pip install python-dotenv --no-cache-dir && \
-    pip install loguru
-
+    pip install loguru --no-cache-dir && \
+    pip install fake_useragent --no-cache-dir
+    
 RUN mkdir /opt/dockerbot
-COPY Health_Statements.py /opt/dockerbot
-COPY Mashov_Health_Statements.py /opt/dockerbot
+RUN mkdir /opt/dockerbot/config
+RUN mkdir /opt/dockerbot/images
+
+COPY config.yml /opt/dockerbot/config
+COPY config.yml /etc
+COPY workers/Health_Statements.py /opt/dockerbot
+COPY workers/Mashov_Health_Statements.py /opt/dockerbot
+COPY workers/Webtop_Health_Statements.py /opt/dockerbot
+COPY workers/Infogan_Health_Statements.py /opt/dockerbot
+COPY helpers.py /opt/dockerbot
 COPY dockerbot.py /opt/dockerbot
 
-RUN echo 'export PATH="/opt/chromedriver-85.0.4183.87":$PATH' >> /root/.bashrc && chmod 777 /opt/dockerbot/Health_Statements.py && chmod 777 /opt/dockerbot/Mashov_Health_Statements.py
+VOLUME [ "/opt/config" ]
+
+RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
+    echo "export CHROME_VERSION=${CHROMEDRIVER_VERSION}" >> /root/.bashrc && \
+    echo 'export PATH=/opt/chromedriver-${CHROME_VERSION}:$PATH' >> /root/.bashrc && \
+    chmod 777 /opt/dockerbot/Health_Statements.py && \
+    chmod 777 /opt/dockerbot/Mashov_Health_Statements.py
 
 ENTRYPOINT ["python", "/opt/dockerbot/dockerbot.py"]

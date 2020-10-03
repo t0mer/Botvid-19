@@ -16,25 +16,35 @@ Botvid-19 is a [Telepot](https://telepot.readthedocs.io/en/latest/) and selenium
 
 - [Adam Russak](https://github.com/AdamRussak) for working with me on this project and writing the selenium part
 
-
 ## Usage
+
+### supported platforms:
+* [edu](https://parents.education.gov.il)
+* [mashov](https://web.mashov.info/students/login)
+* [infogan](https://https://campaign.infogan.co.il/)
+* [webtop](https://www.webtop.co.il/mobilev2/?)
 
 #### docker-compose from hub
 ```yaml
 version: "3.7"
 
 services:
-  havid-19:
-    image: techblog/botid-19
-    container_name: botid-19
+  dockerbot:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: dockerbot
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    privileged: true
     restart: always
-    labels:
-      - "com.ouroboros.enable=true"
     environment:
-      - API_KEY= #Telegram BOT API
-      - ALLOWED_IDS= #Your Telegram ID (Get is using @myidbot)
-   ports:
-      - "6700:6700"
+      - API_KEY=
+      - ALLOWED_IDS=
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /path/to/config/in/host:/opt/config
 ```
 
 Replace API_KEY with your bot token. if you do not have existing bot you can create one
@@ -44,21 +54,35 @@ using the instruction in this article:
 In order to secure the bot and block unwanted calls from Unauthorized users add your allowd Id's with comma separated values into ALLOWED_IDS
 environmet. in order to get your id use @myidbot in telegram and send the /getid command. the result will be your ID:
 
-[![Telegram Bot Integration](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")
+[![Telegram Bot Integration](https://raw.githubusercontent.com/t0mer/Botvid-19/master/example/images/Botvid-19.png "Telegram Bot Integration")](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")
 
-Please fill in all parameters in the file ./Botvid19.env | Please also fill 1 for the websites you want to sign the health statements on
-      - SIGN_WEBSITE_EDUCATION_GOV_IL=0 # 1 for Yes  | to sign at website: https://parents.education.gov.il/prhnet/parents/rights-obligations-regulations/health-statement-kindergarden
-      - SIGN_WEBSITE_MASHOV=0 # 1 for Yes | to sign at website: https://web.mashov.info/students/login
-      - USER_ID= #parents.education.gov.il portal user
-      - USER_KEY= #parents.education.gov.il portal password
-      - MASHOV_NUMBER_OF_KIDS=0 # Please enter number of kids on Mashov site , For example: 3
-      - MASHOV_USER_ID_KID1= # Please enter login information inside '" "' , For example: '"123456789"'
-      - MASHOV_USER_PWD_KID1= # Please enter login information inside '" "' , For example: '"Pa$$w0rd"'
-      - MASHOV_SCHOOL_ID_KID1= # Please enter School number inside '" "', can be extracted from URL https://web.mashov.info/students/login , For example: '"123456"'
-      - MASHOV_USER_ID_KID2=
-      - MASHOV_USER_PWD_KID2=
-      - MASHOV_SCHOOL_ID_KID2=
-...       
+Please fill in all parameters in the file ./config.yml
+```
+edu:
+    USER_ID: 
+    USER_KEY: 
+webtop:
+    USER_ID: 
+    USER_KEY: 
+mashov:
+#Add Kids Block as needed (please enclose with "" , for example "123456")
+#UNused Kid Block should be commented with # or removed from file
+    kid1:
+        MASHOV_USER_ID_KID: 
+        MASHOV_USER_PWD_KID: 
+        MASHOV_SCHOOL_ID_KID: 
+    #kid2:
+    #    MASHOV_USER_ID_KID: 
+    #    MASHOV_USER_PWD_KID: 
+    #    MASHOV_SCHOOL_ID_KID: 
+infogan:
+    BASE_URL: 
+    PARENT_NAME: 
+    PARENT_ID: 
+    KID_NAME: 
+    KID_ID: 
+  ```
+
 
 In order to sign the statement, open your browser and nevigate to your container ip address with port 6700:
 http://Server_Ip_Address:6700/sign.

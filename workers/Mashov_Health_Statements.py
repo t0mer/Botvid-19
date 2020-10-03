@@ -1,14 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Created by Udi Mizrachi - https://github.com/UdiMizrachi
- 
-#def _convert(param):
-#    if isinstance(param, str):
-#        return param.decode('utf-8')
-#    else:
-#        return param
-
 import time
 import os.path
 from selenium import webdriver
@@ -16,8 +8,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from argparse import ArgumentParser
 from selenium.common.exceptions import InvalidSessionIdException
-from dotenv import load_dotenv
-load_dotenv(dotenv_path='/opt/Botvid19.env',override=True)
+from loguru import logger
+
 
 driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
 parser = ArgumentParser()
@@ -43,8 +35,12 @@ option.add_argument("-incognito")
 option.add_argument("--headless")
 option.add_experimental_option("excludeSwitches", ['enable-automation'])
 
+logger.debug('----------------------------------------------------------------------')
+logger.info("Starting Mashov Sign process for kid number: " + var_mashov_kid_number)
+
 
 # **************************** Mashov website ****************************
+logger.info(f"Browsing to Mashov website")
 
 driver.get("https://web.mashov.info/students/login")
 #choose school:
@@ -69,6 +65,8 @@ form_element_mashov_password.send_keys(var_mashov_password)
 form_element_mashov_login.click()
 time.sleep(10)
 
+logger.info(f"Logged in")
+
 form_element_mashov_select_daily_corona_report = driver.find_element_by_xpath("//*[@id='mainView']/mat-sidenav-content/mshv-student-covidsplash/mat-card/mat-card-content/div[3]/mat-card");
 form_element_mashov_select_daily_corona_report.click()
 time.sleep(10)
@@ -89,8 +87,13 @@ if form_element_mashov_check_if_selected_option2 != ("true"):
     time.sleep(2)
 
 form_element_mashov_submit_report.click()
+
+logger.info(f"Submitted Report")
 time.sleep(10)
 
 driver.save_screenshot(var_screenshot_path + "/mashovkid" + var_mashov_kid_number + ".png" )
+logger.info(f"Saved Screenshot")
+logger.info("Finished Mashov Sign process for kid number: " + var_mashov_kid_number)
+logger.debug('----------------------------------------------------------------------')
 
 driver.close()
