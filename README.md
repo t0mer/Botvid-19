@@ -1,3 +1,11 @@
+*Please :star: this repo if you find it useful*
+
+<p align="left"><br>
+<a href="https://www.paypal.com/paypalme/techblogil?locale.x=he_IL" target="_blank"><img src="http://khrolenok.ru/support_paypal.png" alt="PayPal" width="250" height="48"></a>
+</p>
+
+
+
 # Botvid-19
 
 Botvid-19 is a [Telepot](https://telepot.readthedocs.io/en/latest/) and selenium  powered, easy to use Telegram bot for signing Covid-19 digital health statements.
