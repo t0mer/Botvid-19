@@ -14,9 +14,13 @@ from dotenv import load_dotenv
 import yaml
 import shutil
 
+configfile="/opt/dockerbot/config/config.yml"
+if not os.path.exists(configfile):
+    shutil.copyfile('/opt/config.yml', configfile)
+
 
 # get YAML with Configs
-with open("/opt/dockerbot/config/config.yml", 'r') as stream:
+with open(configfile, 'r') as stream:
     try:
         list = yaml.safe_load(stream)
     except yaml.YAMLError as exc:
