@@ -8,15 +8,10 @@ import time
 import os
 from os import path
 from selenium.common.exceptions import InvalidSessionIdException
-from fake_useragent import UserAgent
 from loguru import logger
 
 #### Setting ChromeOptions ####
 def GetBrowser():
-    ### Generating Random UserAgent ###
-    ua = UserAgent()
-    userAgent = ua.random
-    logger.info(f'using user-agent={userAgent}')
     options = webdriver.ChromeOptions()
     options.add_argument("-incognito")
     options.add_argument("--headless")
@@ -26,8 +21,7 @@ def GetBrowser():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=360,640")
     options.add_argument('--ignore-certificate-errors')
-    options.add_argument(f'user-agent={userAgent}')
-    browser = webdriver.Chrome(executable_path="/opt/chromedriver-85.0.4183.87/chromedriver", options=options)
+    browser = webdriver.Chrome(executable_path='/opt/chromedriver-86.0.4240.22/chromedriver', options=options)
     return browser
 
 ##### Screenshot for mobile view - like webtop #####
@@ -57,4 +51,7 @@ def log_browser(browser):
 
 
 def ping(browser, page):
-    browser.get('https://bots.techblog.co.il/' + page + '.html')
+    try:
+        browser.get('https://bots.techblog.co.il/' + page + '.html')
+    except:
+        logger.info("Unable to ping")

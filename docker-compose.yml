@@ -1,11 +1,11 @@
 version: "3.7"
 
 services:
-  dockerbot:
+  botvid:
     build: 
       context: .
       dockerfile: ./Dockerfile
-    container_name: dockerbot
+    container_name: botvid
     network_mode: host
     cap_add:
       - NET_ADMIN
@@ -14,6 +14,7 @@ services:
     environment:
       - API_KEY=
       - ALLOWED_IDS=
+      - USER_ID=
+      - USER_KEY=
     volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-        - /path/to/config/in/host:/opt/config
+      - ./botvid/opt/dockerbot/:/opt/dockerbot/

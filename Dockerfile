@@ -23,13 +23,15 @@ RUN groupadd --system automation && \
 # Install fonts
 RUN apt-get -yqq update && \
     apt-get -yqq install gnupg2 && \
+    apt-get -yqq install supervisor && \
     apt-get -yqq install curl unzip && \
     apt-get -yqq install xvfb tinywm && \
     apt-get -yqq install fonts-ipafont-gothic xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Chrome WebDriver
-RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
+#CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`
+RUN CHROMEDRIVER_VERSION=86.0.4240.22 && \
     mkdir -p /opt/chromedriver-$CHROMEDRIVER_VERSION && \
     curl -sS -o /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip && \
     unzip -qq /tmp/chromedriver_linux64.zip -d /opt/chromedriver-$CHROMEDRIVER_VERSION && \
@@ -58,12 +60,12 @@ RUN pip install selenium --no-cache-dir && \
     pip install telepot --no-cache-dir && \
     pip install pyyaml --no-cache-dir && \
     pip install python-dotenv --no-cache-dir && \
-    pip install loguru --no-cache-dir && \
-    pip install fake_useragent --no-cache-dir
+    pip install loguru --no-cache-dir
     
-RUN mkdir /opt/dockerbot
-RUN mkdir /opt/dockerbot/config
-RUN mkdir /opt/dockerbot/images
+RUN mkdir -p /opt/dockerbot \
+    mkdir -p /opt/dockerbot/config \
+    mkdir -p /opt/dockerbot/images \
+    mkdir -p /var/log/supervisor
 
 COPY config.yml /opt/dockerbot/config
 COPY config.yml /etc
@@ -73,13 +75,13 @@ COPY workers/Webtop_Health_Statements.py /opt/dockerbot
 COPY workers/Infogan_Health_Statements.py /opt/dockerbot
 COPY helpers.py /opt/dockerbot
 COPY dockerbot.py /opt/dockerbot
-
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 VOLUME [ "/opt/config" ]
 
 RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
-    echo "export CHROME_VERSION=${CHROMEDRIVER_VERSION}" >> /root/.bashrc && \
+    echo "export CHROME_VERSION=86.0.4240.22" >> /root/.bashrc && \
     echo 'export PATH=/opt/chromedriver-${CHROME_VERSION}:$PATH' >> /root/.bashrc && \
     chmod 777 /opt/dockerbot/Health_Statements.py && \
     chmod 777 /opt/dockerbot/Mashov_Health_Statements.py
 
-ENTRYPOINT ["python", "/opt/dockerbot/dockerbot.py"]
+CMD ["/usr/bin/supervisord"]

@@ -16,7 +16,7 @@ def sign(userCode, sitePassword, Image):
     try:
         #### Starting Sign Proc ####
         logger.info("Starting process")
-        logger.debug('----------------------------------------------------------------------')
+        logger.debug('-----------------------0000000000-----------------------------------------------')
         logger.debug(str(Image))
         #### Initialize Browser ####
         browser = helpers.GetBrowser()
