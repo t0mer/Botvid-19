@@ -29,22 +29,18 @@ Botvid-19 is a [Telepot](https://telepot.readthedocs.io/en/latest/) and selenium
 version: "3.7"
 
 services:
-  dockerbot:
-    build: 
-      context: .
-      dockerfile: ./Dockerfile
-    container_name: dockerbot
-    network_mode: host
-    cap_add:
-      - NET_ADMIN
-    privileged: true
+  botvid:
+    image: techblog/botvid-19
+    container_name: botvid
     restart: always
+    labels:
+      - "com.ouroboros.enable=true"
     environment:
       - API_KEY=
       - ALLOWED_IDS=
     volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-        - /path/to/config/in/host:/opt/config
+      - ./botvid/config/:/opt/dockerbot/config
+
 ```
 
 Replace API_KEY with your bot token. if you do not have existing bot you can create one
@@ -56,40 +52,35 @@ environmet. in order to get your id use @myidbot in telegram and send the /getid
 
 [![Telegram Bot Integration](https://raw.githubusercontent.com/t0mer/Botvid-19/master/example/images/Botvid-19.png "Telegram Bot Integration")](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")
 
-Please fill in all parameters in the file ./config.yml
+Please fill in all parameters in the file config.yml that is located under the config volume
 ```
 edu:
     USER_ID: 
     USER_KEY: 
-webtop:
-    USER_ID: 
-    USER_KEY: 
 mashov:
-#Add Kids Block as needed (please enclose with "" , for example "123456")
-#UNused Kid Block should be commented with # or removed from file
+#Add Kids Block as needed
+#UNused Kid Block should be left empty or removed from file
     kid1:
         MASHOV_USER_ID_KID: 
         MASHOV_USER_PWD_KID: 
         MASHOV_SCHOOL_ID_KID: 
-    #kid2:
-    #    MASHOV_USER_ID_KID: 
-    #    MASHOV_USER_PWD_KID: 
-    #    MASHOV_SCHOOL_ID_KID: 
+    kid2:
+        MASHOV_USER_ID_KID:
+        MASHOV_USER_PWD_KID: 
+        MASHOV_SCHOOL_ID_KID:
 infogan:
     BASE_URL: 
     PARENT_NAME: 
     PARENT_ID: 
     KID_NAME: 
     KID_ID: 
+webtop:
+    USER_ID: 
+    USER_KEY: 
   ```
 
 
-In order to sign the statement, open your browser and nevigate to your container ip address with port 6700:
-http://Server_Ip_Address:6700/sign.
-The signing process takes about 8-10 seconds and in the ens you'll get a success message.
 
-In oreder to get the image with the signing details nevigate to your container ip address with port 6700:
-http://Server_Ip_Address:6700/statement.
 
 
 

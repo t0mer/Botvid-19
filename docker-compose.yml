@@ -2,19 +2,13 @@ version: "3.7"
 
 services:
   botvid:
-    build: 
-      context: .
-      dockerfile: ./Dockerfile
+    image: techblog/botvid-19
     container_name: botvid
-    network_mode: host
-    cap_add:
-      - NET_ADMIN
-    privileged: true
     restart: always
+    labels:
+      - "com.ouroboros.enable=true"
     environment:
       - API_KEY=
       - ALLOWED_IDS=
-      - USER_ID=
-      - USER_KEY=
     volumes:
-      - ./botvid/opt/dockerbot/:/opt/dockerbot/
+      - ./botvid/config/:/opt/dockerbot/config
