@@ -23,6 +23,7 @@ RUN groupadd --system automation && \
 # Install fonts
 RUN apt-get -yqq update && \
     apt-get -yqq install gnupg2 && \
+    apt-get -yqq install supervisor && \
     apt-get -yqq install curl unzip && \
     apt-get -yqq install xvfb tinywm && \
     apt-get -yqq install fonts-ipafont-gothic xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic && \
@@ -59,12 +60,14 @@ RUN pip install selenium --no-cache-dir && \
     pip install telepot --no-cache-dir && \
     pip install pyyaml --no-cache-dir && \
     pip install python-dotenv --no-cache-dir && \
-    pip install loguru --no-cache-dir
+    pip install loguru --no-cache-dir && \
+    pip install fake_useragent --no-cache-dir
     
-RUN mkdir -p /opt/dockerbot && \
-    mkdir -p /opt/dockerbot/config && \
-    mkdir -p /opt/dockerbot/images
- 
+RUN mkdir -p /opt/dockerbot \
+    mkdir -p /opt/dockerbot/config \
+    mkdir -p /opt/dockerbot/images \
+    mkdir -p /var/log/supervisor
+
 COPY config.yml /opt/dockerbot/config
 COPY config.yml /etc
 COPY workers/Health_Statements.py /opt/dockerbot
@@ -73,7 +76,7 @@ COPY workers/Webtop_Health_Statements.py /opt/dockerbot
 COPY workers/Infogan_Health_Statements.py /opt/dockerbot
 COPY helpers.py /opt/dockerbot
 COPY dockerbot.py /opt/dockerbot
-
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 VOLUME [ "/opt/config" ]
 
 RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
@@ -82,4 +85,4 @@ RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RE
     chmod 777 /opt/dockerbot/Health_Statements.py && \
     chmod 777 /opt/dockerbot/Mashov_Health_Statements.py
 
-ENTRYPOINT ["/usr/bin/python", "/opt/dockerbot/dockerbot.py"]
+CMD ["/usr/bin/supervisord"]
