@@ -16,7 +16,7 @@ import shutil
 
 configfile="/opt/dockerbot/config/config.yml"
 if not os.path.exists(configfile):
-    shutil.copyfile('/opt/config.yml', configfile)
+    shutil.copyfile('/etc/config.yml', configfile)
 
 
 # get YAML with Configs
