@@ -37,7 +37,7 @@ def handle(msg):
     message_id = msg['message_id']
     chat_id = msg['chat']['id']
     command = msg['text']
-    logger.info(f"[{message_id}] Got msg: " + command)
+    logger.info("Got msg: " + command)
 
     # Reject unauthorized requests
     if str(chat_id) not in os.getenv('ALLOWED_IDS'):
