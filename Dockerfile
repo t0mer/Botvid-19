@@ -85,5 +85,5 @@ RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RE
     chmod 777 /opt/dockerbot/Health_Statements.py && \
     chmod 777 /opt/dockerbot/Mashov_Health_Statements.py
 
-#CMD ["/usr/bin/supervisord"]
-ENTRYPOINT ["/usr/bin/python", "/opt/dockerbot/dockerbot.py"]
+CMD ["/usr/bin/supervisord"]
+#ENTRYPOINT ["/usr/bin/python", "/opt/dockerbot/dockerbot.py"]
