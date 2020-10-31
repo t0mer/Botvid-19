@@ -1,4 +1,4 @@
-FROM armhf/python
+FROM armhf/ubuntu
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
