@@ -7,8 +7,8 @@ ENV PYTHONIOENCODING=utf-8
 ENV LANG=C.UTF-8
 
 # Set timezone
-RUN echo "Asia/Jerusalem" > /etc/timezone && \
-    dpkg-reconfigure --frontend noninteractive tzdata
+#RUN echo "Asia/Jerusalem" > /etc/timezone && \
+#    dpkg-reconfigure --frontend noninteractive tzdata
 
 # Create a default user
 RUN groupadd --system automation && \
