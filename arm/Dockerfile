@@ -61,6 +61,9 @@ COPY workers/Infogan_Health_Statements.py /opt/dockerbot
 COPY arm/helpers.py /opt/dockerbot
 COPY dockerbot.py /opt/dockerbot
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY please_sign.jpg /opt/dockerbot
+COPY No-Trespassing.gif /opt/dockerbot
+
 VOLUME [ "/opt/config" ]
 
 RUN CHROMEDRIVER_VERSION=83.0.4103.122  && \
