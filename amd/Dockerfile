@@ -70,6 +70,7 @@ COPY workers/Health_Statements.py /opt/dockerbot
 COPY workers/Mashov_Health_Statements.py /opt/dockerbot
 COPY workers/Webtop_Health_Statements.py /opt/dockerbot
 COPY workers/Infogan_Health_Statements.py /opt/dockerbot
+COPY workers/Amdocs_Health_Statements.py /opt/dockerbot
 COPY amd/helpers.py /opt/dockerbot
 COPY dockerbot.py /opt/dockerbot
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf

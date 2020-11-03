@@ -21,3 +21,7 @@ infogan:
 webtop:
     USER_ID: 
     USER_KEY: 
+amdocs:
+    EMAIL:
+    USER_ID:
+    PASSWORD:
