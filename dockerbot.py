@@ -58,6 +58,9 @@ def handle(msg):
         if list['webtop']['USER_ID'] and list['webtop']['USER_KEY'] != None:
             bot.sendMessage(
                 chat_id, "/sign_webtop - This command start the sign process at https://www.webtop.co.il/v2/? ")
+        if list['amdocs']['EMAIL'] and list['amdocs']['USER_ID'] and list['amdocs']['PASSWORD'] != None:
+            bot.sendMessage(
+                chat_id, "/sign_amdocs - This command start the sign process at Amdocs ")
 
     if command == '/sign_edu' or command == '/sign':
         if list['edu']['USER_ID'] and list['edu']['USER_KEY'] != None:
@@ -154,6 +157,29 @@ def handle(msg):
                 bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
         else:
             bot.sendMessage(chat_id, "mashov NOT configured")
+
+    if command == '/sign_amdocs':
+        if list['amdocs']['EMAIL'] and list['amdocs']['USER_ID'] and list['amdocs']['PASSWORD'] != None:
+            Image = '/opt/dockerbot/images/amdocs_approval.png'
+            try:
+                bot.sendMessage(
+                    chat_id, "Starting Sign process at Amdocs")
+                import Amdocs_Health_Statements
+                if Amdocs_Health_Statements.sign(str(list['amdocs']['EMAIL']), str(list['amdocs']['USER_ID']), str(list['amdocs']['PASSWORD']), Image) == 1:
+                    bot.sendPhoto(chat_id=chat_id, photo=open(str(Image), 'rb'))
+                    time.sleep(1)
+                    os.remove(str(Image))
+                    logger.info(f"[{message_id}] Return result to command {command}. Result image path: {Image}")
+                    bot.sendMessage(chat_id, "Signed")
+                else:
+                    bot.sendMessage(chat_id, "Well, Somthing went wrong, please check the logs for more info")
+            except Exception as ex:
+                logger.exception(
+                    f"[{message_id}] Failed to handle command. Msg: {command}")
+                bot.sendMessage(chat_id, f"ERROR: {str(ex)}")
+        else:
+            bot.sendMessage(chat_id, "Amdocs NOT configured")
+
     msg = f"Done message handling: {command}"
     logger.info(f"[{message_id}] {msg}")
 
