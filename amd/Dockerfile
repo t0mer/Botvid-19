@@ -58,7 +58,7 @@ RUN pip install selenium --no-cache-dir && \
     pip install pyyaml --no-cache-dir && \
     pip install python-dotenv --no-cache-dir && \
     pip install loguru --no-cache-dir
-    
+
 RUN mkdir -p /opt/dockerbot \
     mkdir -p /opt/dockerbot/config \
     mkdir -p /opt/dockerbot/images \
