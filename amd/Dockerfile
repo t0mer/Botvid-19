@@ -28,22 +28,22 @@ RUN apt-get -yqq update && \
     apt-get -yqq install xvfb tinywm && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Chrome WebDriver
-#CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`
-RUN CHROMEDRIVER_VERSION=86.0.4240.22 && \
-    mkdir -p /opt/chromedriver-$CHROMEDRIVER_VERSION && \
-    curl -sS -o /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip && \
-    unzip -qq /tmp/chromedriver_linux64.zip -d /opt/chromedriver-$CHROMEDRIVER_VERSION && \
-    rm /tmp/chromedriver_linux64.zip && \
-    chmod +x /opt/chromedriver-$CHROMEDRIVER_VERSION/chromedriver && \
-    ln -fs /opt/chromedriver-$CHROMEDRIVER_VERSION/chromedriver /usr/local/bin/chromedriver
+# # Install Chrome WebDriver
+# #CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`
+# RUN CHROMEDRIVER_VERSION=86.0.4240.22 && \
+#     mkdir -p /opt/chromedriver-$CHROMEDRIVER_VERSION && \
+#     curl -sS -o /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip && \
+#     unzip -qq /tmp/chromedriver_linux64.zip -d /opt/chromedriver-$CHROMEDRIVER_VERSION && \
+#     rm /tmp/chromedriver_linux64.zip && \
+#     chmod +x /opt/chromedriver-$CHROMEDRIVER_VERSION/chromedriver && \
+#     ln -fs /opt/chromedriver-$CHROMEDRIVER_VERSION/chromedriver /usr/local/bin/chromedriver
 
-# Install Google Chrome
-RUN curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list && \
-    apt-get -yqq update && \
-    apt-get -yqq install google-chrome-stable && \
-    rm -rf /var/lib/apt/lists/*
+# # Install Google Chrome
+# RUN curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+#     echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list && \
+#     apt-get -yqq update && \
+#     apt-get -yqq install google-chrome-stable && \
+#     rm -rf /var/lib/apt/lists/*
 
 # Default configuration
 ENV DISPLAY :20.0
@@ -57,7 +57,8 @@ RUN pip install selenium --no-cache-dir && \
     pip install telepot --no-cache-dir && \
     pip install pyyaml --no-cache-dir && \
     pip install python-dotenv --no-cache-dir && \
-    pip install loguru --no-cache-dir
+    pip install loguru --no-cache-dir && \
+    pip3 install webdriver-manager --no-cache-dir
     
 RUN mkdir -p /opt/dockerbot \
     mkdir -p /opt/dockerbot/config \
@@ -79,9 +80,9 @@ COPY No-Trespassing.gif /opt/dockerbot
 
 VOLUME [ "/opt/config" ]
 
-RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
-    echo "export CHROME_VERSION=86.0.4240.22" >> /root/.bashrc && \
-    echo 'export PATH=/opt/chromedriver-${CHROME_VERSION}:$PATH' >> /root/.bashrc
+# RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
+#     echo "export CHROME_VERSION=86.0.4240.22" >> /root/.bashrc && \
+#     echo 'export PATH=/opt/chromedriver-${CHROME_VERSION}:$PATH' >> /root/.bashrc
 
 CMD ["/usr/bin/supervisord"]
 #ENTRYPOINT ["/usr/bin/python", "/opt/dockerbot/dockerbot.py"]

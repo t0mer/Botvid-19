@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
+from selenium.common.exceptions import InvalidSessionIdException
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
-from datetime import date
-from datetime import time
-from datetime import datetime
-import time
+from datetime import date, time, datetime
+import time, os
 import os
 from os import path
-from selenium.common.exceptions import InvalidSessionIdException
 from loguru import logger
 
 #### Setting ChromeOptions ####
@@ -21,7 +20,7 @@ def GetBrowser():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=360,640")
     options.add_argument('--ignore-certificate-errors')
-    browser = webdriver.Chrome(executable_path='/opt/chromedriver-86.0.4240.22/chromedriver', options=options)
+    browser =  webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
     return browser
 
 ##### Screenshot for mobile view - like webtop #####

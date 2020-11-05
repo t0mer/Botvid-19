@@ -17,19 +17,25 @@ def sign(userCode, sitePassword, Image):
             logger.debug('Unable to ping')
 
         browser.get("https://www.webtop.co.il/mobilev2/?")
+        helpers.log_browser(browser)
         time.sleep(1)
+        
         browser.find_element_by_xpath('//*[@id="misradHachinuch"]').click()
         time.sleep(2)
-        browser.find_element_by_xpath('//*[@id="blocker"]').click()
-        time.sleep(1)
+        helpers.log_browser(browser)
+        
+        browser.get('https://lgn.edu.gov.il/nidp/wsfed/ep?id=EduCombinedAuthUidPwd&sid=0&option=credential&sid=0')
+        time.sleep(2)
+        helpers.log_browser(browser)
         browser.find_element_by_xpath('//*[@id="HIN_USERID"]').send_keys(str(userCode)) 
         browser.find_element_by_xpath('//*[@id="Ecom_Password"]').send_keys(str(sitePassword)) 
         time.sleep(1)
         logger.info('logged in!')
         browser.find_element_by_xpath('//*[@id="loginButton2"]').click()
         time.sleep(2)
+        
         browser.get("https://www.webtop.co.il/mobilev2/corona.aspx")
-        time.sleep(1)
+        time.sleep(2)
         sign_btn=browser.find_element_by_xpath('//*[@id="viewData"]')
         if 'disabled' not in sign_btn.get_attribute('class').split():
             logger.info("class: " + sign_btn.get_attribute('class'))

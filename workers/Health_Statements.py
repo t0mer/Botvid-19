@@ -33,6 +33,9 @@ def sign(userCode, sitePassword, Image):
         helpers.log_browser(browser)
         browser.find_element_by_xpath(start).click()
         time.sleep(2)
+        helpers.log_browser(browser)
+        browser.get('https://lgn.edu.gov.il/nidp/wsfed/ep?id=EduCombinedAuthUidPwd&sid=0&option=credential&sid=0')
+        time.sleep(2)
         
         #### Logging In ####
         user = '//*[@id="HIN_USERID"]'
