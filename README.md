@@ -48,11 +48,15 @@ using the instruction in this article:
 [Bots: An introduction for developers](https://core.telegram.org/bots) 
 
 In order to secure the bot and block unwanted calls from Unauthorized users add your allowd Id's with comma separated values into ALLOWED_IDS
-environmet. in order to get your id use @myidbot in telegram and send the /getid command. the result will be your ID:
+environmet. in order to get your id use @myidbot in telegram and send the /getid command. the result will be your ID.
 
-[![Telegram Bot Integration](https://raw.githubusercontent.com/t0mer/Botvid-19/master/example/images/Botvid-19.png "Telegram Bot Integration")](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")
+Run
+```
+docker-compose up -d
+```
+A config file will be created in ./botvid/config/config.yaml
 
-Please fill in all parameters in the file config.yml that is located under the config volume
+Please fill in the parameters in the file config.yml
 ```
 edu:
     USER_ID: 
@@ -79,7 +83,18 @@ webtop:
     USER_KEY: 
   ```
 
+You may fill only the section that are relevant to you.
 
+Restart the container to apply the config
+```
+docker-compose restart
+```
+
+Enter the bot in Telegram and run the relevant command: `/sign`, `/sign_mashov`, `/sign_infogan`, `/sign_webtop`.
+
+You will get the signed form after about 10 seconds.
+
+[![Telegram Bot Integration](https://raw.githubusercontent.com/t0mer/Botvid-19/master/example/images/Botvid-19.png "Telegram Bot Integration")](https://raw.githubusercontent.com/t0mer/Botvid-19/master/Botvid-19.png "Telegram Bot Integration")
 
 
 
