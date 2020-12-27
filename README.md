@@ -85,12 +85,12 @@ webtop:
 
 You may fill only the section that are relevant to you.
 
-Restart the container to apply the config
-```
-docker-compose restart
-```
-
-Enter the bot in Telegram and run the relevant command: `/sign`, `/sign_mashov`, `/sign_infogan`, `/sign_webtop`.
+Enter the bot in Telegram and run the relevant command:
+    `/sign` - all configured commands
+    `/sign_mashov` - only Mashov
+    `/sign_infogan` - only InfoGan
+    `/sign_webtop` - only WebTop
+    `/?` or `/start` - show configured settings
 
 You will get the signed form after about 10 seconds.
 
