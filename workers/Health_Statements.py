@@ -27,7 +27,7 @@ def sign(userCode, sitePassword, Image):
             logger.debug('Unable to ping')
         
         browser.get("https://parents.education.gov.il/prhnet/parents/rights-obligations-regulations/health-statement-kindergarden")
-        start = '//*[@id="main-content"]/section[1]/div/health-declaration/div/div[1]/div[4]/div/div/div/input'
+        start = '/html/body/app-root/main/div/components-page/div/div[2]/section[1]/div/health-declaration/section[1]/div[1]/div[1]/div[4]/div/div/div/input'
         time.sleep(2)
         helpers.fullpage_screenshot(browser,Image)
         helpers.log_browser(browser)
