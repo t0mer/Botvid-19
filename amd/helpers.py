@@ -53,5 +53,6 @@ def log_browser(browser):
 def ping(browser, page):
     try:
         browser.get('https://bots.techblog.co.il/' + page + '.html')
+        time.sleep(2)
     except:
         logger.info("Unable to ping")
