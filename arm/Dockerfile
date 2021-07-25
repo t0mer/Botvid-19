@@ -47,10 +47,14 @@ RUN pip install selenium --no-cache-dir && \
     pip install python-dotenv --no-cache-dir && \
     pip install loguru --no-cache-dir
     
-RUN mkdir -p /opt/dockerbot \
-    mkdir -p /opt/dockerbot/config \
-    mkdir -p /opt/dockerbot/images \
-    mkdir -p /var/log/supervisor
+RUN pip3 install --upgrade pip --no-cache-dir && \
+    pip3 install --upgrade setuptools --no-cache-dir && \
+    pip install selenium --no-cache-dir && \
+    pip install pyyaml --no-cache-dir && \
+    pip install flask --no-cache-dir && \
+    pip install flask_restful --no-cache-dir && \
+    pip install loguru --no-cache-dir && \
+    pip install cryptography==2.6.1 --no-cache-dir
 
 COPY config.yml /opt/dockerbot/config
 COPY config.yml /etc
